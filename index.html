@@ -1,243 +1,506 @@
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Расчёт прорезов</title>
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Расчёт прорезов
+</title>
 
 <style>
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 body{
 
-    background:#1f1f1f;
-    color:#fff;
+background:
+linear-gradient(
+180deg,
+#07111f 0%,
+#0a1628 40%,
+#0b0f18 100%
+);
 
-    font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+min-height:100vh;
 
-    padding:16px;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+sans-serif;
+
+color:white;
+
+padding:18px;
 }
 
 .app{
 
-    max-width:700px;
-    margin:auto;
+max-width:760px;
+
+margin:auto;
 }
 
-.title{
+.header{
 
-    font-size:42px;
-    font-weight:800;
+margin-bottom:24px;
+}
 
-    margin-bottom:20px;
+.logo{
 
-    text-align:center;
+display:flex;
+
+align-items:center;
+
+gap:16px;
+}
+
+.logo-icon{
+
+width:72px;
+
+height:72px;
+
+border-radius:22px;
+
+background:
+linear-gradient(
+135deg,
+#5eff7a,
+#2cb7ff
+);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:38px;
+
+font-weight:900;
+
+color:#07111f;
+}
+
+.logo-text h1{
+
+font-size:54px;
+
+font-weight:900;
+
+letter-spacing:1px;
+}
+
+.logo-text p{
+
+color:#9ba8bd;
+
+font-size:22px;
+
+margin-top:4px;
 }
 
 .panel{
 
-    background:#2a2a2a;
+background:
+rgba(255,255,255,0.04);
 
-    border-radius:22px;
+border:
+1px solid rgba(255,255,255,0.06);
 
-    padding:18px;
+backdrop-filter:blur(20px);
 
-    margin-bottom:16px;
+border-radius:30px;
 
-    box-shadow:
-    0 10px 30px rgba(0,0,0,0.25);
+padding:22px;
+
+margin-bottom:22px;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,0.3);
+}
+
+.panel-head{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:18px;
+}
+
+.panel-title{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+font-size:28px;
+
+font-weight:800;
+
+color:#67ff75;
+}
+
+.badge{
+
+padding:12px 18px;
+
+border-radius:16px;
+
+background:
+rgba(255,255,255,0.05);
+
+color:#d6dce8;
+
+font-size:18px;
 }
 
 textarea{
 
-    width:100%;
+width:100%;
 
-    height:170px;
+height:190px;
 
-    border:none;
+border:none;
 
-    border-radius:18px;
+outline:none;
 
-    background:#333;
+resize:none;
 
-    color:#fff;
+padding:24px;
 
-    padding:16px;
+font-size:34px;
 
-    resize:none;
+line-height:1.5;
 
-    font-size:20px;
+color:white;
 
-    outline:none;
+background:
+rgba(0,0,0,0.2);
 
-    line-height:1.5;
+border-radius:24px;
 }
 
 .buttons{
 
-    display:flex;
+display:flex;
 
-    gap:12px;
+gap:14px;
 
-    margin-top:16px;
+margin-top:18px;
 }
 
 button{
 
-    border:none;
+border:none;
 
-    border-radius:18px;
+cursor:pointer;
 
-    padding:16px;
+border-radius:22px;
 
-    font-size:18px;
+padding:22px;
 
-    font-weight:700;
+font-size:28px;
 
-    cursor:pointer;
+font-weight:800;
+
+transition:0.2s;
+}
+
+button:active{
+
+transform:scale(0.98);
 }
 
 .btn-main{
 
-    flex:1;
+flex:1;
 
-    background:#4fc35c;
+background:
+linear-gradient(
+135deg,
+#5dff72,
+#49d85d
+);
 
-    color:#fff;
+color:#07111f;
 }
 
 .btn-clear{
 
-    width:150px;
+width:220px;
 
-    background:#555;
+background:
+rgba(255,255,255,0.08);
 
-    color:#fff;
+color:white;
 }
 
 .btn-share{
 
-    width:170px;
+width:320px;
 
-    background:#3d82ff;
+background:
+linear-gradient(
+135deg,
+#327bff,
+#5b4dff
+);
 
-    color:#fff;
+color:white;
 }
 
-.results{
+.results-title{
 
-    margin-top:20px;
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+font-size:30px;
+
+font-weight:900;
+
+margin-bottom:18px;
+
+color:#c8d2e3;
 }
 
 .card{
 
-    background:#2b2b2b;
+background:
+rgba(255,255,255,0.04);
 
-    border-radius:24px;
+border:
+1px solid rgba(255,255,255,0.06);
 
-    padding:22px;
+border-radius:30px;
 
-    margin-bottom:18px;
+padding:24px;
 
-    box-shadow:
-    0 8px 25px rgba(0,0,0,0.2);
+margin-bottom:18px;
 }
 
 .card-title{
 
-    font-size:34px;
+font-size:44px;
 
-    font-weight:800;
+font-weight:900;
 
-    margin-bottom:18px;
+margin-bottom:20px;
 }
 
 .row{
 
-    display:flex;
+display:flex;
 
-    justify-content:space-between;
+justify-content:space-between;
 
-    align-items:center;
+align-items:center;
 
-    margin:10px 0;
+padding:10px 0;
 
-    font-size:24px;
+font-size:34px;
 }
 
-.green{
+.value{
 
-    color:#65ff6d;
+font-size:52px;
 
-    font-weight:800;
+font-weight:900;
 
-    font-size:34px;
+color:#67ff75;
 }
 
-.detail{
+.info{
 
-    margin-top:18px;
+margin-top:18px;
 
-    color:#aaa;
+padding-top:18px;
 
-    font-size:17px;
+border-top:
+1px solid rgba(255,255,255,0.08);
 
-    line-height:1.7;
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:20px;
+}
+
+.info-box{
+
+font-size:23px;
+
+line-height:1.6;
+
+color:#a8b2c2;
 }
 
 .summary{
 
-    background:#303030;
+margin-top:28px;
 
-    border-radius:22px;
+background:
+linear-gradient(
+135deg,
+rgba(94,255,122,0.12),
+rgba(50,123,255,0.12)
+);
 
-    padding:24px;
+border:
+1px solid rgba(94,255,122,0.18);
 
-    text-align:center;
+border-radius:30px;
 
-    font-size:38px;
+padding:28px;
 
-    font-weight:800;
+display:flex;
 
-    color:#65ff6d;
+justify-content:space-between;
+
+align-items:center;
 }
 
-.copy{
+.summary span{
 
-    margin-top:12px;
+font-size:34px;
 
-    text-align:center;
+font-weight:900;
+}
 
-    color:#999;
+.summary strong{
 
-    font-size:15px;
+font-size:64px;
+
+color:#67ff75;
+}
+
+@media(max-width:700px){
+
+.logo-text h1{
+
+font-size:34px;
+}
+
+.logo-text p{
+
+font-size:16px;
+}
+
+textarea{
+
+font-size:26px;
+}
+
+.buttons{
+
+flex-direction:column;
+}
+
+.btn-clear,
+.btn-share{
+
+width:100%;
+}
+
+.card-title{
+
+font-size:34px;
+}
+
+.row{
+
+font-size:26px;
+}
+
+.value{
+
+font-size:42px;
+}
+
+.info{
+
+grid-template-columns:1fr;
+}
+
+.summary{
+
+flex-direction:column;
+
+gap:12px;
+}
+
+.summary strong{
+
+font-size:52px;
+}
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="app">
 
-<div class="title">
-📐 Расчёт прорезов
+<div class="header">
+
+<div class="logo">
+
+<div class="logo-icon">
+✂
+</div>
+
+<div class="logo-text">
+
+<h1>
+РАСЧЁТ ПРОРЕЗОВ
+</h1>
+
+<p>
+26 реек = 1 прорез
+</p>
+
+</div>
+
+</div>
+
 </div>
 
 <div class="panel">
 
-<textarea id="input"
+<div class="panel-head">
+
+<div class="panel-title">
+🧾 Введите заказ
+</div>
+
+<div class="badge">
+270 см рейка
+</div>
+
+</div>
+
+<textarea
+id="input"
 placeholder="30x20 — 350
 40x30 — 350
 70x50 — 400"></textarea>
@@ -259,18 +522,17 @@ onclick="clearAll()">
 <button
 class="btn-share"
 onclick="shareResult()">
-📤 Поделиться
+📤 Поделиться планом
 </button>
 
 </div>
 
-<div class="copy">
-26 реек = 1 прорез
 </div>
 
+<div
+class="results"
+id="results">
 </div>
-
-<div id="results" class="results"></div>
 
 </div>
 
@@ -284,274 +546,312 @@ let shareText = '';
 
 function parseInput(text){
 
-    const items = [];
+const items = [];
 
-    text
-    .split('\n')
-    .forEach(line=>{
+text
+.split('\n')
+.forEach(line=>{
 
-        const m = line.match(
-        /(\d+)\s*[xх×]\s*(\d+)\s*[-—–]\s*(\d+)/i
-        );
+const m = line.match(
+/(\d+)\s*[xх×]\s*(\d+)\s*[-—–]\s*(\d+)/i
+);
 
-        if(m){
+if(m){
 
-            items.push({
+items.push({
 
-                w:+m[1],
+w:+m[1],
 
-                h:+m[2],
+h:+m[2],
 
-                q:+m[3]
-            });
-        }
-    });
+q:+m[3]
+});
+}
+});
 
-    return items;
+return items;
 }
 
 function calc(){
 
-    const input =
-    document
-    .getElementById('input')
-    .value
-    .trim();
+const input =
+document
+.getElementById('input')
+.value
+.trim();
 
-    if(!input){
+if(!input){
 
-        alert('Введите заказ');
+alert('Введите заказ');
 
-        return;
-    }
+return;
+}
 
-    const items = parseInput(input);
+const items =
+parseInput(input);
 
-    if(!items.length){
+if(!items.length){
 
-        alert('Неверный формат');
+alert('Неверный формат');
 
-        return;
-    }
+return;
+}
 
-    const need = {};
+const need = {};
 
-    items.forEach(it=>{
+items.forEach(it=>{
 
-        need[it.w] =
-        (need[it.w] || 0)
-        + (it.q * 2);
+need[it.w] =
+(need[it.w] || 0)
++ (it.q * 2);
 
-        need[it.h] =
-        (need[it.h] || 0)
-        + (it.q * 2);
-    });
+need[it.h] =
+(need[it.h] || 0)
++ (it.q * 2);
+});
 
-    const cuts = {};
+const cuts = {};
 
-    const details = {};
+const details = {};
 
-    Object.keys(need).forEach(key=>{
+Object.keys(need).forEach(key=>{
 
-        const sz = +key;
+const sz = +key;
 
-        const totalDetails =
-        need[sz];
+const totalDetails =
+need[sz];
 
-        const perReika =
-        Math.floor(REIKA / sz);
+const perReika =
+Math.floor(
+REIKA / sz
+);
 
-        const reiki =
-        Math.ceil(
-            totalDetails / perReika
-        );
+const reiki =
+Math.ceil(
+totalDetails / perReika
+);
 
-        const propili =
-        Math.ceil(
-            reiki / LOAD
-        );
+const propili =
+Math.ceil(
+reiki / LOAD
+);
 
-        cuts[sz] = propili;
+cuts[sz] = propili;
 
-        details[sz] = {
+details[sz] = {
 
-            details:
-            totalDetails,
+details:
+totalDetails,
 
-            perReika:
-            perReika,
+perReika:
+perReika,
 
-            reiki:
-            reiki,
+reiki:
+reiki,
 
-            propili:
-            propili
-        };
-    });
+propili:
+propili
+};
+});
 
-    const counted = {};
+let html = `
 
-    let html = '';
+<div class="results-title">
+📊 Результаты расчёта
+</div>
+`;
 
-    let total = 0;
+let total = 0;
 
-    shareText =
-    '📐 План прорезов\n\n';
+const counted = {};
 
-    items.forEach(it=>{
+shareText =
+'📐 План прорезов\n\n';
 
-        let cw = 0;
+items.forEach(it=>{
 
-        let ch = 0;
+let cw = 0;
 
-        if(!counted[it.w]){
+let ch = 0;
 
-            cw = cuts[it.w];
+if(!counted[it.w]){
 
-            counted[it.w] = true;
-        }
+cw = cuts[it.w];
 
-        if(!counted[it.h]){
+counted[it.w] = true;
+}
 
-            ch = cuts[it.h];
+if(!counted[it.h]){
 
-            counted[it.h] = true;
-        }
+ch = cuts[it.h];
 
-        total += cw + ch;
+counted[it.h] = true;
+}
 
-        const dw = details[it.w];
+total += cw + ch;
 
-        const dh = details[it.h];
+const dw = details[it.w];
 
-        html += `
+const dh = details[it.h];
 
-        <div class="card">
+html += `
 
-            <div class="card-title">
-            📏 ${it.w}×${it.h}
-            — ${it.q} шт.
-            </div>
+<div class="card">
 
-            <div class="row">
+<div class="card-title">
+📏 ${it.w}×${it.h}
+— ${it.q} шт.
+</div>
 
-                <span>
-                Прорезов в ${it.w}
-                </span>
+<div class="row">
 
-                <span class="green">
-                ${cw}
-                </span>
+<span>
+Прорезов в ${it.w}
+</span>
 
-            </div>
+<span class="value">
+${cw}
+</span>
 
-            <div class="row">
+</div>
 
-                <span>
-                Прорезов в ${it.h}
-                </span>
+<div class="row">
 
-                <span class="green">
-                ${ch}
-                </span>
+<span>
+Прорезов в ${it.h}
+</span>
 
-            </div>
+<span class="value">
+${ch}
+</span>
 
-            <div class="detail">
+</div>
 
-            ${it.w}см:
-            деталей ${dw.details},
-            ${dw.perReika} шт/рейка,
-            реек ${dw.reiki},
-            прорезов ${dw.propili}
+<div class="info">
 
-            <br><br>
+<div class="info-box">
 
-            ${it.h}см:
-            деталей ${dh.details},
-            ${dh.perReika} шт/рейка,
-            реек ${dh.reiki},
-            прорезов ${dh.propili}
+${it.w}см<br>
 
-            </div>
+• деталей:
+${dw.details}<br>
 
-        </div>
-        `;
+• шт/рейка:
+${dw.perReika}<br>
 
-        shareText +=
-        `📏 ${it.w}×${it.h} — ${it.q} шт.\n` +
+• реек:
+${dw.reiki}<br>
 
-        `• ${it.w}см → ${cw} прорезов\n` +
+• прорезов:
+${dw.propili}
 
-        `• ${it.h}см → ${ch} прорезов\n\n`;
-    });
+</div>
 
-    html += `
+<div class="info-box">
 
-    <div class="summary">
+${it.h}см<br>
 
-        🔪 Всего прорезов:
-        ${total}
+• деталей:
+${dh.details}<br>
 
-    </div>
-    `;
+• шт/рейка:
+${dh.perReika}<br>
 
-    shareText +=
-    `🔪 Всего прорезов: ${total}`;
+• реек:
+${dh.reiki}<br>
 
-    document
-    .getElementById('results')
-    .innerHTML = html;
+• прорезов:
+${dh.propili}
+
+</div>
+
+</div>
+
+</div>
+`;
+
+shareText +=
+`📏 ${it.w}×${it.h}
+— ${it.q} шт.\n` +
+
+`• ${it.w}см →
+${cw} прорезов\n` +
+
+`• ${it.h}см →
+${ch} прорезов\n\n`;
+});
+
+html += `
+
+<div class="summary">
+
+<span>
+🔪 Всего прорезов
+</span>
+
+<strong>
+${total}
+</strong>
+
+</div>
+`;
+
+shareText +=
+`\n🔪 Всего:
+${total}`;
+
+document
+.getElementById('results')
+.innerHTML = html;
 }
 
 function shareResult(){
 
-    if(!shareText){
+if(!shareText){
 
-        alert(
-        'Сначала сделайте расчёт'
-        );
+alert(
+'Сначала сделайте расчёт'
+);
 
-        return;
-    }
+return;
+}
 
-    if(navigator.share){
+if(navigator.share){
 
-        navigator.share({
+navigator.share({
 
-            title:
-            'План прорезов',
+title:
+'План прорезов',
 
-            text:
-            shareText
-        });
-    }
-    else{
+text:
+shareText
+});
+}
+else{
 
-        navigator.clipboard
-        .writeText(shareText);
+navigator.clipboard
+.writeText(shareText);
 
-        alert(
-        'Текст скопирован'
-        );
-    }
+alert(
+'План скопирован'
+);
+}
 }
 
 function clearAll(){
 
-    document
-    .getElementById('input')
-    .value = '';
+document
+.getElementById('input')
+.value = '';
 
-    document
-    .getElementById('results')
-    .innerHTML = '';
+document
+.getElementById('results')
+.innerHTML = '';
 
-    shareText = '';
+shareText = '';
 }
 
 </script>
 
 </body>
 </html>
-```
