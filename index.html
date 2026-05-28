@@ -1,264 +1,717 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Расчёт прорезов</title>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family:'Segoe UI',Tahoma,sans-serif;
-            background:#2c2c2c; min-height:100vh;
-            display:flex; justify-content:center; align-items:center; padding:20px;
-        }
-        .app {
-            background:#3a3a3a; border-radius:12px; padding:20px;
-            width:100%; max-width:650px; box-shadow:0 8px 32px rgba(0,0,0,0.4);
-        }
-        h1 { color:#e0e0e0; text-align:center; margin-bottom:14px; font-size:20px; }
-        .info { background:#333; border-radius:8px; padding:10px 14px; margin-bottom:14px; font-size:13px; color:#aaa; }
-        .info b { color:#ddd; }
-        .stock-panel {
-            background:#2a3a2a; border:1px solid #3a5a3a; border-radius:8px;
-            padding:12px 14px; margin-bottom:14px;
-            display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
-        }
-        .stock-title { color:#8b8; font-size:13px; font-weight:600; }
-        .stock-list { color:#ccc; font-size:13px; flex:1; min-width:200px; }
-        .btn-clear-stock { background:#833; color:#fcc; border:none; padding:8px 14px; border-radius:6px; font-size:13px; cursor:pointer; }
-        label { display:block; color:#b0b0b0; margin-bottom:6px; font-size:14px; }
-        textarea {
-            width:100%; height:140px; background:#4a4a4a; border:1px solid #555;
-            border-radius:8px; color:#fff; font-size:14px; padding:12px; outline:none; resize:vertical;
-            font-family:'SF Mono',monospace; line-height:1.6;
-        }
-        .hint { color:#888; font-size:11px; margin-top:4px; }
-        .btn-row { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
-        .btn {
-            flex:1; min-width:100px; padding:12px; border:none; border-radius:8px;
-            font-size:14px; font-weight:500; cursor:pointer;
-        }
-        .btn-calculate { background:#5a8; color:#fff; }
-        .btn-clear { background:#555; color:#ccc; }
-        .btn-share { background:#48a; color:#fff; flex:0.5; min-width:60px; font-size:18px; }
-        .results { margin-top:16px; display:none; }
-        .results.show { display:block; }
-        .size-block {
-            background:#333; border-radius:8px; padding:12px 14px; margin-bottom:10px;
-        }
-        .size-block .size-header { color:#fff; font-size:15px; font-weight:600; margin-bottom:6px; }
-        .size-block .size-row { display:flex; justify-content:space-between; color:#ccc; font-size:13px; padding:2px 0; }
-        .size-block .size-row .val { color:#5c5; font-weight:600; }
-        .detail { font-size:11px; color:#888; margin-top:2px; line-height:1.4; }
-        .summary { background:#444; border-radius:8px; padding:14px 16px; margin-top:12px; }
-        .summary-row { display:flex; justify-content:space-between; padding:3px 0; color:#ddd; font-size:14px; }
-        .summary-row .val { color:#fff; font-weight:700; font-size:16px; }
-        .error { color:#e88; text-align:center; margin-top:12px; display:none; font-size:13px; }
-        .error.show { display:block; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Расчёт прорезов</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:#2c2c2c;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.app{
+    background:#3a3a3a;
+    border-radius:12px;
+    padding:20px;
+    width:100%;
+    max-width:700px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+
+h1{
+    color:#e0e0e0;
+    text-align:center;
+    margin-bottom:14px;
+    font-size:22px;
+}
+
+.info{
+    background:#333;
+    border-radius:8px;
+    padding:10px 14px;
+    margin-bottom:14px;
+    font-size:13px;
+    color:#aaa;
+}
+
+.info b{
+    color:#ddd;
+}
+
+.stock-panel{
+    background:#2a3a2a;
+    border:1px solid #3a5a3a;
+    border-radius:8px;
+    padding:12px 14px;
+    margin-bottom:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.stock-title{
+    color:#8b8;
+    font-weight:600;
+}
+
+.stock-list{
+    color:#ccc;
+    flex:1;
+}
+
+.btn-clear-stock{
+    background:#833;
+    color:#fff;
+    border:none;
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+label{
+    display:block;
+    color:#bbb;
+    margin-bottom:6px;
+}
+
+textarea{
+    width:100%;
+    height:150px;
+    background:#4a4a4a;
+    border:1px solid #555;
+    border-radius:8px;
+    color:#fff;
+    padding:12px;
+    resize:vertical;
+    font-size:14px;
+    font-family:monospace;
+    line-height:1.6;
+}
+
+.hint{
+    color:#888;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.btn-row{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+}
+
+.btn{
+    flex:1;
+    border:none;
+    border-radius:8px;
+    padding:12px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+}
+
+.btn-calculate{
+    background:#5a8;
+    color:#fff;
+}
+
+.btn-clear{
+    background:#555;
+    color:#ddd;
+}
+
+.btn-share{
+    background:#48a;
+    color:#fff;
+    flex:0.5;
+}
+
+.results{
+    margin-top:18px;
+    display:none;
+}
+
+.results.show{
+    display:block;
+}
+
+.size-block{
+    background:#333;
+    border-radius:8px;
+    padding:12px 14px;
+    margin-bottom:10px;
+}
+
+.size-header{
+    color:#fff;
+    font-size:15px;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.size-row{
+    display:flex;
+    justify-content:space-between;
+    color:#ccc;
+    padding:2px 0;
+}
+
+.val{
+    color:#6f6;
+    font-weight:700;
+}
+
+.detail{
+    margin-top:6px;
+    font-size:11px;
+    color:#888;
+    line-height:1.5;
+}
+
+.summary{
+    background:#444;
+    border-radius:8px;
+    padding:14px;
+    margin-top:12px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+}
+
+.error{
+    color:#f88;
+    margin-top:12px;
+    display:none;
+}
+
+.error.show{
+    display:block;
+}
+
+</style>
 </head>
+
 <body>
+
 <div class="app">
-    <h1>📐 Расчёт прорезов</h1>
-    <div class="info"><b>Рейка:</b> 270 см | <b>Загрузка:</b> 26 шт. | <b>Деталей:</b> 4</div>
-    <div class="stock-panel">
-        <span class="stock-title">📦 Склад:</span>
-        <span class="stock-list" id="stockList">пусто</span>
-        <button class="btn-clear-stock" onclick="clearStock()">Очистить</button>
-    </div>
-    <label>Введите заказ:</label>
-    <textarea id="inputData" placeholder="30x50 — 100
-20x30 — 350"></textarea>
-    <div class="hint">Формат: <b>Ширина x Высота — Количество</b></div>
-    <div class="btn-row">
-        <button class="btn btn-calculate" onclick="calc()">Рассчитать</button>
-        <button class="btn btn-clear" onclick="clearInput()">Очистить</button>
-        <button class="btn btn-share" onclick="shareResult()">📤</button>
-    </div>
-    <div class="error" id="error"></div>
-    <div class="results" id="results"></div>
+
+<h1>📐 Расчёт прорезов</h1>
+
+<div class="info">
+<b>Рейка:</b> 270 см
 </div>
+
+<div class="stock-panel">
+    <span class="stock-title">📦 Склад:</span>
+    <span class="stock-list" id="stockList">пусто</span>
+
+    <button class="btn-clear-stock" onclick="clearStock()">
+        Очистить
+    </button>
+</div>
+
+<label>Введите заказ:</label>
+
+<textarea id="inputData" placeholder="30x50 — 100
+20x30 — 350"></textarea>
+
+<div class="hint">
+Формат: Ширина x Высота — Количество
+</div>
+
+<div class="btn-row">
+
+<button class="btn btn-calculate" onclick="calc()">
+Рассчитать
+</button>
+
+<button class="btn btn-clear" onclick="clearInput()">
+Очистить
+</button>
+
+<button class="btn btn-share" onclick="shareResult()">
+📤
+</button>
+
+</div>
+
+<div class="error" id="error"></div>
+
+<div class="results" id="results"></div>
+
+</div>
+
 <script>
-var LOAD = 26;
+
 var REIKA = 270;
+
 var stock = {};
+
 var lastText = '';
 
-function loadStock() {
-    try { stock = JSON.parse(localStorage.getItem('pod_v15')) || {}; } catch(e) { stock = {}; }
-    renderStock();
-}
-function saveStock() {
-    localStorage.setItem('pod_v15', JSON.stringify(stock));
-    renderStock();
-}
-function renderStock() {
-    var list = document.getElementById('stockList');
-    var arr = [];
-    for (var k in stock) { if (stock[k] > 0) arr.push([+k, stock[k]]); }
-    list.textContent = arr.length ? arr.sort(function(a,b){return a[0]-b[0]}).map(function(e){return e[0]+'см ×'+e[1]}).join(', ') : 'пусто';
-}
-function clearStock() { if (confirm('Очистить?')) { stock = {}; saveStock(); } }
+function loadStock(){
 
-function parseInput(text) {
+    try{
+        stock = JSON.parse(
+            localStorage.getItem('pod_v16')
+        ) || {};
+    }
+    catch(e){
+        stock = {};
+    }
+
+    renderStock();
+}
+
+function saveStock(){
+
+    localStorage.setItem(
+        'pod_v16',
+        JSON.stringify(stock)
+    );
+
+    renderStock();
+}
+
+function renderStock(){
+
+    var list = document.getElementById('stockList');
+
+    var arr = [];
+
+    for(var k in stock){
+
+        if(stock[k] > 0){
+
+            arr.push([
+                +k,
+                stock[k]
+            ]);
+        }
+    }
+
+    list.textContent = arr.length
+        ? arr
+            .sort(function(a,b){
+                return a[0]-b[0];
+            })
+            .map(function(e){
+                return e[0] + 'см ×' + e[1];
+            })
+            .join(', ')
+        : 'пусто';
+}
+
+function clearStock(){
+
+    if(confirm('Очистить склад?')){
+
+        stock = {};
+
+        saveStock();
+    }
+}
+
+function parseInput(text){
+
     var items = [];
-    text.split('\n').forEach(function(l) {
-        var m = l.match(/(\d+)\s*[xх×]\s*(\d+)\s*[-—–]\s*(\d+)/i);
-        if (m) { var w=+m[1], h=+m[2], q=+m[3]; if (w&&h&&q) items.push({w:w, h:h, q:q}); }
+
+    text.split('\n').forEach(function(line){
+
+        var m = line.match(
+            /(\d+)\s*[xх×]\s*(\d+)\s*[-—–]\s*(\d+)/i
+        );
+
+        if(m){
+
+            items.push({
+                w:+m[1],
+                h:+m[2],
+                q:+m[3]
+            });
+        }
     });
+
     return items;
 }
 
-function calc() {
-    var input = document.getElementById('inputData').value.trim();
+function calc(){
+
+    var input = document
+        .getElementById('inputData')
+        .value
+        .trim();
+
     var errEl = document.getElementById('error');
+
     var resEl = document.getElementById('results');
+
     errEl.classList.remove('show');
     resEl.classList.remove('show');
-    if (!input) { errEl.textContent = 'Введите заказ'; errEl.classList.add('show'); return; }
-    var items = parseInput(input);
-    if (!items.length) { errEl.textContent = 'Неверный формат'; errEl.classList.add('show'); return; }
 
-    // 1. Собираем потребности: { размер: сколько деталей }
-    var need = {};
-    for (var i = 0; i < items.length; i++) {
-        need[items[i].w] = (need[items[i].w] || 0) + items[i].q * 2;
-        need[items[i].h] = (need[items[i].h] || 0) + items[i].q * 2;
+    if(!input){
+
+        errEl.textContent = 'Введите заказ';
+
+        errEl.classList.add('show');
+
+        return;
     }
 
-    // 2. Берём со склада
+    var items = parseInput(input);
+
+    if(!items.length){
+
+        errEl.textContent = 'Неверный формат';
+
+        errEl.classList.add('show');
+
+        return;
+    }
+
+    // потребность
+
+    var need = {};
+
+    items.forEach(function(it){
+
+        need[it.w] =
+            (need[it.w] || 0) + it.q * 2;
+
+        need[it.h] =
+            (need[it.h] || 0) + it.q * 2;
+    });
+
+    // склад
+
     var fromStock = {};
-    for (var k in stock) {
+
+    for(var k in stock){
+
         var sz = +k;
-        if (need[sz] > 0 && stock[k] > 0) {
-            var take = Math.min(need[sz], stock[k]);
+
+        if(need[sz] > 0){
+
+            var take = Math.min(
+                need[sz],
+                stock[k]
+            );
+
             need[sz] -= take;
+
             stock[k] -= take;
-            fromStock[sz] = (fromStock[sz] || 0) + take;
+
+            fromStock[sz] = take;
         }
     }
 
-    // 3. Сортируем размеры от больших к меньшим
-    var sizes = Object.keys(need).map(Number).sort(function(a,b){return b-a});
+    // размеры
 
-    // 4. Для каждого размера: остатки → рейки → прорезы
+    var sizes = Object.keys(need)
+        .map(Number)
+        .sort(function(a,b){
+            return b-a;
+        });
+
     var cuts = {};
-    var leftovers = []; // массив длин остатков реек
+
     var det = {};
 
-    for (var s = 0; s < sizes.length; s++) {
-        var sz = sizes[s];
-        var needed = need[sz] || 0;
+    var leftovers = [];
+
+    // расчёт
+
+    sizes.forEach(function(sz){
+
+        var needed = need[sz];
+
         var fromLeft = 0;
 
-        // 4a. Берём из остатков
-        if (needed > 0) {
-            var newLeft = [];
-            for (var l = 0; l < leftovers.length; l++) {
-                if (needed <= 0) {
-                    newLeft.push(leftovers[l]);
-                } else if (leftovers[l] >= sz) {
-                    var can = Math.floor(leftovers[l] / sz);
-                    var take = Math.min(can, needed);
-                    needed -= take;
-                    leftovers[l] -= take * sz;
-                    fromLeft += take;
-                    if (leftovers[l] > 0) newLeft.push(leftovers[l]);
-                } else {
-                    newLeft.push(leftovers[l]);
-                }
-            }
-            leftovers = newLeft;
-        }
+        // остатки
 
-        // 4b. Если ещё нужно — режем новые рейки
-        var reiki = 0;
-        if (needed > 0) {
-            var perReika = Math.floor(REIKA / sz);
-            if (perReika > 0) {
-                reiki = Math.ceil(needed / perReika);
-                cuts[sz] = Math.ceil(reiki / LOAD);
-                var rest = REIKA - perReika * sz;
-                // Добавляем остатки
-                for (var r = 0; r < reiki; r++) {
-                    if (rest > 0) leftovers.push(rest);
-                }
-            } else {
-                cuts[sz] = 0;
+        var newLeft = [];
+
+        leftovers.forEach(function(rest){
+
+            if(needed <= 0){
+
+                newLeft.push(rest);
+
+                return;
             }
-        } else {
+
+            if(rest >= sz){
+
+                var can =
+                    Math.floor(rest / sz);
+
+                var take =
+                    Math.min(can, needed);
+
+                needed -= take;
+
+                fromLeft += take;
+
+                rest -= take * sz;
+            }
+
+            if(rest > 0){
+
+                newLeft.push(rest);
+            }
+        });
+
+        leftovers = newLeft;
+
+        // новые рейки
+
+        var perReika =
+            Math.floor(REIKA / sz);
+
+        var reiki = 0;
+
+        if(needed > 0 && perReika > 0){
+
+            reiki =
+                Math.ceil(
+                    needed / perReika
+                );
+
+            // ПРОРЕЗЫ = РЕЙКИ
+
+            cuts[sz] = reiki;
+
+            var restLen =
+                REIKA -
+                (perReika * sz);
+
+            for(var i=0;i<reiki;i++){
+
+                if(restLen > 0){
+
+                    leftovers.push(restLen);
+                }
+            }
+        }
+        else{
+
             cuts[sz] = 0;
         }
 
         det[sz] = {
-            reiki: reiki,
-            perReika: Math.floor(REIKA / sz),
-            fromLeft: fromLeft,
-            fromStock: fromStock[sz] || 0
-        };
-    }
 
-    // 5. Неиспользованные остатки — на склад
-    for (var l = 0; l < leftovers.length; l++) {
-        var restLen = leftovers[l];
-        if (restLen > 0 && (restLen < 9 || (restLen >= 30 && restLen <= 33))) {
-            stock[restLen] = (stock[restLen] || 0) + 1;
+            perReika:perReika,
+
+            reiki:reiki,
+
+            fromLeft:fromLeft,
+
+            fromStock:fromStock[sz] || 0
+        };
+    });
+
+    // остатки на склад
+
+    leftovers.forEach(function(rest){
+
+        if(
+            rest > 0 &&
+            (
+                rest < 9 ||
+                (rest >= 30 && rest <= 33)
+            )
+        ){
+
+            stock[rest] =
+                (stock[rest] || 0) + 1;
         }
-    }
+    });
+
     saveStock();
 
-    // 6. Вывод
-    var html = '';
-    var totalCuts = 0;
-    var textOut = '📐 Расчёт прорезов\nРейка: ' + REIKA + ' см | Загрузка: ' + LOAD + '\n\n';
+    // вывод
 
-    for (var i = 0; i < items.length; i++) {
-        var w = items[i].w, h = items[i].h, q = items[i].q;
-        var cw = cuts[w] || 0, ch = cuts[h] || 0, sum = cw + ch;
+    var html = '';
+
+    var totalCuts = 0;
+
+    var counted = {};
+
+    var textOut =
+        '📐 Расчёт прорезов\n\n';
+
+    items.forEach(function(it){
+
+        var w = it.w;
+        var h = it.h;
+        var q = it.q;
+
+        var cw = 0;
+        var ch = 0;
+
+        if(!counted[w]){
+
+            cw = cuts[w] || 0;
+
+            counted[w] = true;
+        }
+
+        if(!counted[h]){
+
+            ch = cuts[h] || 0;
+
+            counted[h] = true;
+        }
+
+        var sum = cw + ch;
+
         totalCuts += sum;
 
-        var dw = det[w] || {}, dh = det[h] || {};
+        var dw = det[w] || {};
+        var dh = det[h] || {};
 
-        html += '<div class="size-block">' +
-            '<div class="size-header">📏 ' + w + '×' + h + ' — ' + q + ' шт.</div>' +
-            '<div class="size-row"><span>Прорезов в ' + w + '</span><span class="val">' + cw + ' шт.</span></div>' +
-            '<div class="size-row"><span>Прорезов в ' + h + '</span><span class="val">' + ch + ' шт.</span></div>' +
-            '<div class="detail">' +
-            w + 'см: ' + (dw.perReika||'?') + ' шт/р, реек: ' + (dw.reiki||0) + ', из ост: ' + (dw.fromLeft||0) + ', склад: ' + (dw.fromStock||0) + ' | ' +
-            h + 'см: ' + (dh.perReika||'?') + ' шт/р, реек: ' + (dh.reiki||0) + ', из ост: ' + (dh.fromLeft||0) + ', склад: ' + (dh.fromStock||0) +
+        html +=
+
+        '<div class="size-block">' +
+
+            '<div class="size-header">' +
+            '📏 ' + w + '×' + h +
+            ' — ' + q + ' шт.' +
             '</div>' +
-            '<div class="size-row" style="border-top:1px solid #555; padding-top:4px; margin-top:4px;">' +
-            '<span style="color:#fff;">Итого</span><span class="val" style="font-size:15px;">' + sum + ' шт.</span></div></div>';
 
-        textOut += w + '×' + h + ' — ' + q + ' шт.\n';
-        textOut += '  Прорезов: ' + cw + ' + ' + ch + ' = ' + sum + '\n\n';
-    }
+            '<div class="size-row">' +
+            '<span>Прорезов в ' + w + '</span>' +
+            '<span class="val">' + cw + '</span>' +
+            '</div>' +
 
-    html += '<div class="summary"><div class="summary-row"><span>🔪 Всего прорезов:</span><span class="val">' + totalCuts + ' шт.</span></div></div>';
-    textOut += '🔪 Всего: ' + totalCuts + ' шт.';
+            '<div class="size-row">' +
+            '<span>Прорезов в ' + h + '</span>' +
+            '<span class="val">' + ch + '</span>' +
+            '</div>' +
 
-    var stockArr = [];
-    for (var k in stock) { if (stock[k] > 0) stockArr.push([+k, stock[k]]); }
-    if (stockArr.length) {
-        textOut += '\n📦 Склад: ' + stockArr.sort(function(a,b){return a[0]-b[0]}).map(function(e){return e[0]+'см ×'+e[1]}).join(', ');
-    }
+            '<div class="detail">' +
+
+            w + 'см: ' +
+            (dw.perReika || 0) +
+            ' шт/рейка, реек: ' +
+            (dw.reiki || 0) +
+            ', остатки: ' +
+            (dw.fromLeft || 0) +
+            ', склад: ' +
+            (dw.fromStock || 0) +
+
+            ' | ' +
+
+            h + 'см: ' +
+            (dh.perReika || 0) +
+            ' шт/рейка, реек: ' +
+            (dh.reiki || 0) +
+            ', остатки: ' +
+            (dh.fromLeft || 0) +
+            ', склад: ' +
+            (dh.fromStock || 0) +
+
+            '</div>' +
+
+        '</div>';
+
+        textOut +=
+            w + '×' + h +
+            ' — ' + q +
+            ' шт. → ' +
+            sum +
+            ' прорезов\n';
+    });
+
+    html +=
+
+    '<div class="summary">' +
+
+        '<div class="summary-row">' +
+
+            '<span>🔪 Всего прорезов:</span>' +
+
+            '<span>' +
+            totalCuts +
+            '</span>' +
+
+        '</div>' +
+
+    '</div>';
+
+    textOut +=
+        '\n🔪 Всего: ' +
+        totalCuts;
 
     resEl.innerHTML = html;
+
     resEl.classList.add('show');
+
     lastText = textOut;
 }
 
-function shareResult() {
-    if (!lastText) { alert('Нажмите Рассчитать'); return; }
-    if (navigator.share) navigator.share({text:lastText});
-    else alert(lastText);
+function shareResult(){
+
+    if(!lastText){
+
+        alert('Сначала рассчитайте');
+
+        return;
+    }
+
+    if(navigator.share){
+
+        navigator.share({
+            text:lastText
+        });
+    }
+    else{
+
+        alert(lastText);
+    }
 }
-function clearInput() {
-    document.getElementById('inputData').value = '';
-    document.getElementById('results').classList.remove('show');
-    document.getElementById('error').classList.remove('show');
+
+function clearInput(){
+
+    document.getElementById('inputData').value='';
+
+    document
+        .getElementById('results')
+        .classList
+        .remove('show');
+
+    document
+        .getElementById('error')
+        .classList
+        .remove('show');
 }
+
 loadStock();
+
 </script>
+
 </body>
 </html>
+```
