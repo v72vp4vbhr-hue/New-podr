@@ -1,86 +1,119 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Расчёт прорезов</title>
 
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: #2c2c2c;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
-.app {
-    background: #3a3a3a;
-    border-radius: 12px;
-    padding: 20px;
-    width: 100%;
-    max-width: 700px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+
+body{
+    background:#2b2b2b;
+    color:#fff;
+    font-family:Arial,sans-serif;
+    padding:20px;
 }
-h1 { color: #e0e0e0; text-align: center; margin-bottom: 14px; font-size: 22px; }
-.info { background: #333; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: #aaa; }
-.info b { color: #ddd; }
-.stock-panel {
-    background: #2a3a2a;
-    border: 1px solid #3a5a3a;
-    border-radius: 8px;
-    padding: 12px 14px;
-    margin-bottom: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+
+.app{
+    max-width:700px;
+    margin:auto;
 }
-.stock-title { color: #8b8; font-weight: 600; }
-.stock-list { color: #ccc; flex: 1; }
-.btn-clear-stock { background: #833; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
-label { display: block; color: #bbb; margin-bottom: 6px; }
-textarea {
-    width: 100%;
-    height: 150px;
-    background: #4a4a4a;
-    border: 1px solid #555;
-    border-radius: 8px;
-    color: #fff;
-    padding: 12px;
-    resize: vertical;
-    font-size: 14px;
-    font-family: monospace;
-    line-height: 1.6;
+
+h1{
+    margin-bottom:15px;
+    text-align:center;
 }
-.hint { color: #888; font-size: 12px; margin-top: 5px; }
-.btn-row { display: flex; gap: 10px; margin-top: 14px; }
-.btn {
-    flex: 1;
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
+
+textarea{
+    width:100%;
+    height:150px;
+    background:#3b3b3b;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    color:#fff;
+    font-size:15px;
+    resize:vertical;
 }
-.btn-calculate { background: #5a8; color: #fff; }
-.btn-clear { background: #555; color: #ddd; }
-.btn-share { background: #48a; color: #fff; flex: 0.5; }
-.results { margin-top: 18px; display: none; }
-.results.show { display: block; }
-.size-block { background: #333; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
-.size-header { color: #fff; font-size: 15px; margin-bottom: 8px; font-weight: 600; }
-.size-row { display: flex; justify-content: space-between; color: #ccc; padding: 2px 0; }
-.val { color: #6f6; font-weight: 700; }
-.detail { margin-top: 6px; font-size: 11px; color: #888; line-height: 1.5; }
-.summary { background: #444; border-radius: 8px; padding: 14px; margin-top: 12px; }
-.summary-row { display: flex; justify-content: space-between; color: #fff; font-size: 16px; font-weight: 700; }
-.error { color: #f88; margin-top: 12px; display: none; }
-.error.show { display: block; }
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+}
+
+button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.calc{
+    background:#4caf50;
+    color:#fff;
+}
+
+.clear{
+    background:#555;
+    color:#fff;
+}
+
+.results{
+    margin-top:20px;
+}
+
+.card{
+    background:#3a3a3a;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:14px;
+}
+
+.title{
+    font-size:26px;
+    font-weight:bold;
+    margin-bottom:14px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    font-size:20px;
+    margin:6px 0;
+}
+
+.green{
+    color:#6dff6d;
+    font-weight:bold;
+}
+
+.detail{
+    margin-top:10px;
+    color:#aaa;
+    line-height:1.5;
+    font-size:14px;
+}
+
+.summary{
+    background:#444;
+    padding:15px;
+    border-radius:12px;
+    font-size:22px;
+    font-weight:bold;
+    text-align:center;
+}
+
 </style>
 </head>
 
@@ -90,247 +123,235 @@ textarea {
 
 <h1>📐 Расчёт прорезов</h1>
 
-<div class="info">
-<b>Рейка:</b> 270 см &nbsp;|&nbsp; <b>Загрузка:</b> 26 шт. &nbsp;|&nbsp; <b>Деталей на подрамник:</b> 4
+<textarea id="input" placeholder="30x20 — 350
+40x30 — 350"></textarea>
+
+<div class="buttons">
+
+<button class="calc" onclick="calc()">
+Рассчитать
+</button>
+
+<button class="clear" onclick="clearInput()">
+Очистить
+</button>
+
 </div>
 
-<div class="stock-panel">
-    <span class="stock-title">📦 Склад:</span>
-    <span class="stock-list" id="stockList">пусто</span>
-    <button class="btn-clear-stock" onclick="clearStock()">Очистить</button>
-</div>
-
-<label>Введите заказ:</label>
-<textarea id="inputData" placeholder="30x50 — 100
-20x30 — 350"></textarea>
-<div class="hint">Формат: Ширина x Высота — Количество</div>
-
-<div class="btn-row">
-    <button class="btn btn-calculate" onclick="calc()">Рассчитать</button>
-    <button class="btn btn-clear" onclick="clearInput()">Очистить</button>
-    <button class="btn btn-share" onclick="shareResult()">📤</button>
-</div>
-
-<div class="error" id="error"></div>
 <div class="results" id="results"></div>
 
 </div>
 
 <script>
 
-var REIKA = 270;
-var LOAD = 26;
-var stock = {};
-var lastText = '';
+const REIKA = 270;
 
-function loadStock() {
-    try { stock = JSON.parse(localStorage.getItem('pod_v17')) || {}; } catch(e) { stock = {}; }
-    renderStock();
-}
+// 26 реек = 1 прорез
 
-function saveStock() {
-    localStorage.setItem('pod_v17', JSON.stringify(stock));
-    renderStock();
-}
+const LOAD = 26;
 
-function renderStock() {
-    var list = document.getElementById('stockList');
-    var arr = [];
-    for (var k in stock) {
-        if (stock[k] > 0) arr.push([+k, stock[k]]);
-    }
-    list.textContent = arr.length
-        ? arr.sort(function(a,b) { return a[0] - b[0]; })
-            .map(function(e) { return e[0] + 'см ×' + e[1]; })
-            .join(', ')
-        : 'пусто';
-}
+function parseInput(text){
 
-function clearStock() {
-    if (confirm('Очистить склад?')) { stock = {}; saveStock(); }
-}
+    const items = [];
 
-function parseInput(text) {
-    var items = [];
-    text.split('\n').forEach(function(line) {
-        var m = line.match(/(\d+)\s*[xх×]\s*(\d+)\s*[-—–]\s*(\d+)/i);
-        if (m) { items.push({ w: +m[1], h: +m[2], q: +m[3] }); }
+    text.split('\n').forEach(line=>{
+
+        const m = line.match(
+            /(\d+)\s*[xх×]\s*(\d+)\s*[-—–]\s*(\d+)/i
+        );
+
+        if(m){
+
+            items.push({
+
+                w:+m[1],
+
+                h:+m[2],
+
+                q:+m[3]
+            });
+        }
     });
+
     return items;
 }
 
-function calc() {
-    var input = document.getElementById('inputData').value.trim();
-    var errEl = document.getElementById('error');
-    var resEl = document.getElementById('results');
+function calc(){
 
-    errEl.classList.remove('show');
-    resEl.classList.remove('show');
+    const input =
+        document.getElementById('input').value.trim();
 
-    if (!input) {
-        errEl.textContent = 'Введите заказ';
-        errEl.classList.add('show');
+    if(!input){
+
+        alert('Введите заказ');
+
         return;
     }
 
-    var items = parseInput(input);
+    const items = parseInput(input);
 
-    if (!items.length) {
-        errEl.textContent = 'Неверный формат';
-        errEl.classList.add('show');
+    if(!items.length){
+
+        alert('Неверный формат');
+
         return;
     }
 
-    // Потребности
-    var need = {};
-    items.forEach(function(it) {
-        need[it.w] = (need[it.w] || 0) + it.q * 2;
-        need[it.h] = (need[it.h] || 0) + it.q * 2;
+    const results =
+        document.getElementById('results');
+
+    let html = '';
+
+    let totalCuts = 0;
+
+    // чтобы одинаковые размеры
+    // не считать повторно
+
+    const counted = {};
+
+    // собираем потребность
+
+    const need = {};
+
+    items.forEach(it=>{
+
+        need[it.w] =
+            (need[it.w] || 0) + it.q * 2;
+
+        need[it.h] =
+            (need[it.h] || 0) + it.q * 2;
     });
 
-    // Склад
-    var fromStock = {};
-    for (var k in stock) {
-        var sz = +k;
-        if (need[sz] > 0 && stock[k] > 0) {
-            var take = Math.min(need[sz], stock[k]);
-            need[sz] -= take;
-            stock[k] -= take;
-            fromStock[sz] = (fromStock[sz] || 0) + take;
-        }
-    }
+    // считаем прорезы
 
-    // Размеры от больших к меньшим
-    var sizes = Object.keys(need).map(Number).sort(function(a,b) { return b - a; });
+    const cuts = {};
 
-    var cuts = {};
-    var det = {};
-    var leftovers = [];
+    const details = {};
 
-    sizes.forEach(function(sz) {
-        var needed = need[sz] || 0;
-        var fromLeft = 0;
+    Object.keys(need).forEach(key=>{
 
-        // Остатки
-        var newLeft = [];
-        leftovers.forEach(function(rest) {
-            if (needed <= 0) { newLeft.push(rest); return; }
-            if (rest >= sz) {
-                var can = Math.floor(rest / sz);
-                var take = Math.min(can, needed);
-                needed -= take;
-                fromLeft += take;
-                rest -= take * sz;
-            }
-            if (rest > 0) newLeft.push(rest);
-        });
-        leftovers = newLeft;
+        const sz = +key;
 
-        // Новые рейки
-        var perReika = Math.floor(REIKA / sz);
-        var reiki = 0;
+        const totalDetails = need[sz];
 
-        if (needed > 0 && perReika > 0) {
-            reiki = Math.ceil(needed / perReika);
-            // ПРОРЕЗЫ = рейки / 26
-            cuts[sz] = Math.ceil(reiki / LOAD);
+        // сколько деталей помещается в рейку
 
-            var restLen = REIKA - (perReika * sz);
-            for (var i = 0; i < reiki; i++) {
-                if (restLen > 0) leftovers.push(restLen);
-            }
-        } else {
-            cuts[sz] = 0;
-        }
+        const perReika =
+            Math.floor(REIKA / sz);
 
-        det[sz] = {
-            perReika: perReika,
-            reiki: reiki,
-            fromLeft: fromLeft,
-            fromStock: fromStock[sz] || 0
+        // сколько реек нужно
+
+        const reiki =
+            Math.ceil(
+                totalDetails / perReika
+            );
+
+        // сколько прорезов
+
+        const propili =
+            Math.ceil(
+                reiki / LOAD
+            );
+
+        cuts[sz] = propili;
+
+        details[sz] = {
+
+            details:totalDetails,
+
+            perReika:perReika,
+
+            reiki:reiki,
+
+            propili:propili
         };
     });
 
-    // Остатки на склад
-    leftovers.forEach(function(rest) {
-        if (rest > 0 && (rest < 9 || (rest >= 30 && rest <= 33))) {
-            stock[rest] = (stock[rest] || 0) + 1;
+    // вывод
+
+    items.forEach(it=>{
+
+        let cw = 0;
+        let ch = 0;
+
+        if(!counted[it.w]){
+
+            cw = cuts[it.w];
+
+            counted[it.w] = true;
         }
+
+        if(!counted[it.h]){
+
+            ch = cuts[it.h];
+
+            counted[it.h] = true;
+        }
+
+        totalCuts += cw + ch;
+
+        const dw = details[it.w];
+
+        const dh = details[it.h];
+
+        html += `
+
+        <div class="card">
+
+            <div class="title">
+                📏 ${it.w}×${it.h} — ${it.q} шт.
+            </div>
+
+            <div class="row">
+                <span>Прорезов в ${it.w}</span>
+                <span class="green">${cw}</span>
+            </div>
+
+            <div class="row">
+                <span>Прорезов в ${it.h}</span>
+                <span class="green">${ch}</span>
+            </div>
+
+            <div class="detail">
+
+                ${it.w}см:
+                деталей ${dw.details},
+                ${dw.perReika} шт/рейка,
+                реек ${dw.reiki},
+                прорезов ${dw.propili}
+
+                <br><br>
+
+                ${it.h}см:
+                деталей ${dh.details},
+                ${dh.perReika} шт/рейка,
+                реек ${dh.reiki},
+                прорезов ${dh.propili}
+
+            </div>
+
+        </div>
+        `;
     });
-    saveStock();
 
-    // Вывод
-    var html = '';
-    var totalCuts = 0;
-    var counted = {};
-    var textOut = '📐 Расчёт прорезов\nРейка: ' + REIKA + ' см | Загрузка: ' + LOAD + ' шт.\n\n';
+    html += `
+    <div class="summary">
+        🔪 Всего прорезов: ${totalCuts}
+    </div>
+    `;
 
-    items.forEach(function(it) {
-        var w = it.w, h = it.h, q = it.q;
-
-        var cw = 0, ch = 0;
-        if (!counted[w]) { cw = cuts[w] || 0; counted[w] = true; }
-        if (!counted[h]) { ch = cuts[h] || 0; counted[h] = true; }
-
-        var sum = cw + ch;
-        totalCuts += sum;
-
-        var dw = det[w] || {}, dh = det[h] || {};
-
-        html +=
-        '<div class="size-block">' +
-            '<div class="size-header">📏 ' + w + '×' + h + ' — ' + q + ' шт.</div>' +
-            '<div class="size-row"><span>Прорезов в ' + w + '</span><span class="val">' + cw + ' шт.</span></div>' +
-            '<div class="size-row"><span>Прорезов в ' + h + '</span><span class="val">' + ch + ' шт.</span></div>' +
-            '<div class="detail">' +
-                w + 'см: ' + (dw.perReika || 0) + ' шт/рейка, реек: ' + (dw.reiki || 0) +
-                ', из остатков: ' + (dw.fromLeft || 0) + ', со склада: ' + (dw.fromStock || 0) +
-                ' | ' +
-                h + 'см: ' + (dh.perReika || 0) + ' шт/рейка, реек: ' + (dh.reiki || 0) +
-                ', из остатков: ' + (dh.fromLeft || 0) + ', со склада: ' + (dh.fromStock || 0) +
-            '</div>' +
-        '</div>';
-
-        textOut += w + '×' + h + ' — ' + q + ' шт. → ' + sum + ' прорезов\n';
-    });
-
-    html +=
-    '<div class="summary">' +
-        '<div class="summary-row">' +
-            '<span>🔪 Всего прорезов:</span>' +
-            '<span>' + totalCuts + ' шт.</span>' +
-        '</div>' +
-    '</div>';
-
-    textOut += '\n🔪 Всего: ' + totalCuts + ' шт.';
-
-    var stockArr = [];
-    for (var k in stock) { if (stock[k] > 0) stockArr.push([+k, stock[k]]); }
-    if (stockArr.length) {
-        textOut += '\n📦 Склад: ' + stockArr.sort(function(a,b) { return a[0] - b[0]; })
-            .map(function(e) { return e[0] + 'см ×' + e[1]; }).join(', ');
-    }
-
-    resEl.innerHTML = html;
-    resEl.classList.add('show');
-    lastText = textOut;
+    results.innerHTML = html;
 }
 
-function shareResult() {
-    if (!lastText) { alert('Сначала рассчитайте'); return; }
-    if (navigator.share) { navigator.share({ text: lastText }); }
-    else { alert(lastText); }
-}
+function clearInput(){
 
-function clearInput() {
-    document.getElementById('inputData').value = '';
-    document.getElementById('results').classList.remove('show');
-    document.getElementById('error').classList.remove('show');
-}
+    document.getElementById('input').value='';
 
-loadStock();
+    document.getElementById('results').innerHTML='';
+}
 
 </script>
 
 </body>
 </html>
+```
