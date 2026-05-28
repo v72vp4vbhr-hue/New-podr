@@ -61,7 +61,7 @@
         .size-block .size-header { color: #fff; font-size: 15px; font-weight: 600; margin-bottom: 6px; }
         .size-block .size-row { display: flex; justify-content: space-between; color: #ccc; font-size: 13px; padding: 2px 0; }
         .size-block .size-row .val { color: #5c5; font-weight: 600; }
-        .size-block .detail { font-size: 11px; color: #888; margin-top: 2px; }
+        .detail { font-size: 11px; color: #888; margin-top: 2px; line-height: 1.4; }
         .summary { background: #444; border-radius: 8px; padding: 14px 16px; margin-top: 12px; }
         .summary-row { display: flex; justify-content: space-between; padding: 3px 0; color: #ddd; font-size: 14px; }
         .summary-row .val { color: #fff; font-weight: 700; font-size: 16px; }
@@ -97,11 +97,11 @@ var stock = {};
 var lastText = '';
 
 function loadStock() {
-    try { stock = JSON.parse(localStorage.getItem('pod_v13')) || {}; } catch(e) { stock = {}; }
+    try { stock = JSON.parse(localStorage.getItem('pod_v14')) || {}; } catch(e) { stock = {}; }
     renderStock();
 }
 function saveStock() {
-    localStorage.setItem('pod_v13', JSON.stringify(stock));
+    localStorage.setItem('pod_v14', JSON.stringify(stock));
     renderStock();
 }
 function renderStock() {
@@ -143,41 +143,53 @@ function calc() {
     for (var k in stock) st[k] = stock[k];
 
     // Берём со склада
+    var fromStock = {};
     for (var k in st) {
         var sz = +k;
-        while (need[sz] > 0 && st[k] > 0) { need[sz]--; st[k]--; }
+        var took = 0;
+        while (need[sz] > 0 && st[k] > 0) { need[sz]--; st[k]--; took++; }
+        if (took > 0) fromStock[sz] = took;
     }
 
     // Сортируем размеры от больших к меньшим
     var sizes = Object.keys(need).map(Number).sort(function(a,b){return b-a});
 
-    var cuts = {};      // прорезы на размер
+    var cuts = {};
     var leftovers = []; // остатки реек в см
-    var details = {};   // для вывода: { размер: { reiki, perReika, fromLeftovers, fromStock } }
+    var det = {};       // детализация
 
     for (var s = 0; s < sizes.length; s++) {
         var sz = sizes[s];
         var needed = need[sz] || 0;
-        var fromLeftovers = 0;
-        var fromStock = 0;
+        var fromLeft = 0;
 
-        if (needed <= 0) { cuts[sz] = 0; details[sz] = {reiki:0, perReika:0, fromLeftovers:0, fromStock:0}; continue; }
+        if (needed <= 0) {
+            cuts[sz] = 0;
+            det[sz] = {reiki: 0, perReika: Math.floor(REIKA/sz), fromLeft: 0, fromStock: fromStock[sz] || 0};
+            continue;
+        }
 
-        // Используем остатки
-        for (var l = 0; l < leftovers.length && needed > 0; l++) {
+        // Используем остатки реек
+        var newLeftovers = [];
+        for (var l = 0; l < leftovers.length; l++) {
+            if (needed <= 0) {
+                newLeftovers.push(leftovers[l]);
+                continue;
+            }
             if (leftovers[l] >= sz) {
                 var can = Math.floor(leftovers[l] / sz);
                 var take = Math.min(can, needed);
                 needed -= take;
                 leftovers[l] -= take * sz;
-                fromLeftovers += take;
+                fromLeft += take;
             }
+            if (leftovers[l] > 0) newLeftovers.push(leftovers[l]);
         }
-        leftovers = leftovers.filter(function(x){return x > 0});
+        leftovers = newLeftovers;
 
         if (needed <= 0) {
             cuts[sz] = 0;
-            details[sz] = {reiki: 0, perReika: Math.floor(REIKA/sz), fromLeftovers: fromLeftovers, fromStock: fromStock};
+            det[sz] = {reiki: 0, perReika: Math.floor(REIKA/sz), fromLeft: fromLeft, fromStock: fromStock[sz] || 0};
             continue;
         }
 
@@ -185,12 +197,13 @@ function calc() {
         var reiki = Math.ceil(needed / perReika);
         cuts[sz] = Math.ceil(reiki / LOAD);
 
+        // Остатки ТОЛЬКО от новых реек
         var rest = REIKA - perReika * sz;
         for (var r = 0; r < reiki; r++) {
             if (rest > 0) leftovers.push(rest);
         }
 
-        details[sz] = {reiki: reiki, perReika: perReika, fromLeftovers: fromLeftovers, fromStock: fromStock};
+        det[sz] = {reiki: reiki, perReika: perReika, fromLeft: fromLeft, fromStock: fromStock[sz] || 0};
     }
 
     // Сохраняем склад
@@ -212,14 +225,16 @@ function calc() {
         var cw = cuts[w] || 0, ch = cuts[h] || 0, sum = cw + ch;
         totalCuts += sum;
 
-        var dw = details[w] || {}, dh = details[h] || {};
+        var dw = det[w] || {}, dh = det[h] || {};
 
         html += '<div class="size-block">' +
             '<div class="size-header">📏 ' + w + '×' + h + ' — ' + q + ' шт.</div>' +
             '<div class="size-row"><span>Прорезов в ' + w + '</span><span class="val">' + cw + ' шт.</span></div>' +
             '<div class="size-row"><span>Прорезов в ' + h + '</span><span class="val">' + ch + ' шт.</span></div>' +
-            '<div class="detail">' + w + 'см: ' + (dw.perReika||'?') + ' шт/рейку, реек: ' + (dw.reiki||0) + ', из остатков: ' + (dw.fromLeftovers||0) + ' | ' +
-            h + 'см: ' + (dh.perReika||'?') + ' шт/рейку, реек: ' + (dh.reiki||0) + ', из остатков: ' + (dh.fromLeftovers||0) + '</div>' +
+            '<div class="detail">' +
+            w + 'см: ' + (dw.perReika||'?') + ' шт/р, реек: ' + (dw.reiki||0) + ', из остатков: ' + (dw.fromLeft||0) + ', со склада: ' + (dw.fromStock||0) + ' | ' +
+            h + 'см: ' + (dh.perReika||'?') + ' шт/р, реек: ' + (dh.reiki||0) + ', из остатков: ' + (dh.fromLeft||0) + ', со склада: ' + (dh.fromStock||0) +
+            '</div>' +
             '<div class="size-row" style="border-top:1px solid #555; padding-top:4px; margin-top:4px;">' +
             '<span style="color:#fff;">Итого</span><span class="val" style="font-size:15px;">' + sum + ' шт.</span></div></div>';
 
