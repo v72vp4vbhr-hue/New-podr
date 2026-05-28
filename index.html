@@ -16,102 +16,212 @@
 }
 
 body{
-    background:#2b2b2b;
+
+    background:#1f1f1f;
     color:#fff;
-    font-family:Arial,sans-serif;
-    padding:20px;
+
+    font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+    padding:16px;
 }
 
 .app{
+
     max-width:700px;
     margin:auto;
 }
 
-h1{
-    margin-bottom:15px;
+.title{
+
+    font-size:42px;
+    font-weight:800;
+
+    margin-bottom:20px;
+
     text-align:center;
 }
 
+.panel{
+
+    background:#2a2a2a;
+
+    border-radius:22px;
+
+    padding:18px;
+
+    margin-bottom:16px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.25);
+}
+
 textarea{
+
     width:100%;
-    height:150px;
-    background:#3b3b3b;
+
+    height:170px;
+
     border:none;
-    border-radius:10px;
-    padding:12px;
+
+    border-radius:18px;
+
+    background:#333;
+
     color:#fff;
-    font-size:15px;
-    resize:vertical;
+
+    padding:16px;
+
+    resize:none;
+
+    font-size:20px;
+
+    outline:none;
+
+    line-height:1.5;
 }
 
 .buttons{
+
     display:flex;
-    gap:10px;
-    margin-top:10px;
+
+    gap:12px;
+
+    margin-top:16px;
 }
 
 button{
-    flex:1;
-    padding:12px;
+
     border:none;
-    border-radius:10px;
-    font-size:15px;
+
+    border-radius:18px;
+
+    padding:16px;
+
+    font-size:18px;
+
+    font-weight:700;
+
     cursor:pointer;
 }
 
-.calc{
-    background:#4caf50;
+.btn-main{
+
+    flex:1;
+
+    background:#4fc35c;
+
     color:#fff;
 }
 
-.clear{
+.btn-clear{
+
+    width:150px;
+
     background:#555;
+
+    color:#fff;
+}
+
+.btn-share{
+
+    width:170px;
+
+    background:#3d82ff;
+
     color:#fff;
 }
 
 .results{
+
     margin-top:20px;
 }
 
 .card{
-    background:#3a3a3a;
-    border-radius:12px;
-    padding:15px;
-    margin-bottom:14px;
+
+    background:#2b2b2b;
+
+    border-radius:24px;
+
+    padding:22px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,0.2);
 }
 
-.title{
-    font-size:26px;
-    font-weight:bold;
-    margin-bottom:14px;
+.card-title{
+
+    font-size:34px;
+
+    font-weight:800;
+
+    margin-bottom:18px;
 }
 
 .row{
+
     display:flex;
+
     justify-content:space-between;
-    font-size:20px;
-    margin:6px 0;
+
+    align-items:center;
+
+    margin:10px 0;
+
+    font-size:24px;
 }
 
 .green{
-    color:#6dff6d;
-    font-weight:bold;
+
+    color:#65ff6d;
+
+    font-weight:800;
+
+    font-size:34px;
 }
 
 .detail{
-    margin-top:10px;
+
+    margin-top:18px;
+
     color:#aaa;
-    line-height:1.5;
-    font-size:14px;
+
+    font-size:17px;
+
+    line-height:1.7;
 }
 
 .summary{
-    background:#444;
-    padding:15px;
-    border-radius:12px;
-    font-size:22px;
-    font-weight:bold;
+
+    background:#303030;
+
+    border-radius:22px;
+
+    padding:24px;
+
     text-align:center;
+
+    font-size:38px;
+
+    font-weight:800;
+
+    color:#65ff6d;
+}
+
+.copy{
+
+    margin-top:12px;
+
+    text-align:center;
+
+    color:#999;
+
+    font-size:15px;
 }
 
 </style>
@@ -121,24 +231,46 @@ button{
 
 <div class="app">
 
-<h1>📐 Расчёт прорезов</h1>
+<div class="title">
+📐 Расчёт прорезов
+</div>
 
-<textarea id="input" placeholder="30x20 — 350
-40x30 — 350"></textarea>
+<div class="panel">
+
+<textarea id="input"
+placeholder="30x20 — 350
+40x30 — 350
+70x50 — 400"></textarea>
 
 <div class="buttons">
 
-<button class="calc" onclick="calc()">
+<button
+class="btn-main"
+onclick="calc()">
 Рассчитать
 </button>
 
-<button class="clear" onclick="clearInput()">
+<button
+class="btn-clear"
+onclick="clearAll()">
 Очистить
+</button>
+
+<button
+class="btn-share"
+onclick="shareResult()">
+📤 Поделиться
 </button>
 
 </div>
 
-<div class="results" id="results"></div>
+<div class="copy">
+26 реек = 1 прорез
+</div>
+
+</div>
+
+<div id="results" class="results"></div>
 
 </div>
 
@@ -146,18 +278,20 @@ button{
 
 const REIKA = 270;
 
-// 26 реек = 1 прорез
-
 const LOAD = 26;
+
+let shareText = '';
 
 function parseInput(text){
 
     const items = [];
 
-    text.split('\n').forEach(line=>{
+    text
+    .split('\n')
+    .forEach(line=>{
 
         const m = line.match(
-            /(\d+)\s*[xх×]\s*(\d+)\s*[-—–]\s*(\d+)/i
+        /(\d+)\s*[xх×]\s*(\d+)\s*[-—–]\s*(\d+)/i
         );
 
         if(m){
@@ -179,7 +313,10 @@ function parseInput(text){
 function calc(){
 
     const input =
-        document.getElementById('input').value.trim();
+    document
+    .getElementById('input')
+    .value
+    .trim();
 
     if(!input){
 
@@ -197,32 +334,18 @@ function calc(){
         return;
     }
 
-    const results =
-        document.getElementById('results');
-
-    let html = '';
-
-    let totalCuts = 0;
-
-    // чтобы одинаковые размеры
-    // не считать повторно
-
-    const counted = {};
-
-    // собираем потребность
-
     const need = {};
 
     items.forEach(it=>{
 
         need[it.w] =
-            (need[it.w] || 0) + it.q * 2;
+        (need[it.w] || 0)
+        + (it.q * 2);
 
         need[it.h] =
-            (need[it.h] || 0) + it.q * 2;
+        (need[it.h] || 0)
+        + (it.q * 2);
     });
-
-    // считаем прорезы
 
     const cuts = {};
 
@@ -232,46 +355,53 @@ function calc(){
 
         const sz = +key;
 
-        const totalDetails = need[sz];
-
-        // сколько деталей помещается в рейку
+        const totalDetails =
+        need[sz];
 
         const perReika =
-            Math.floor(REIKA / sz);
-
-        // сколько реек нужно
+        Math.floor(REIKA / sz);
 
         const reiki =
-            Math.ceil(
-                totalDetails / perReika
-            );
-
-        // сколько прорезов
+        Math.ceil(
+            totalDetails / perReika
+        );
 
         const propili =
-            Math.ceil(
-                reiki / LOAD
-            );
+        Math.ceil(
+            reiki / LOAD
+        );
 
         cuts[sz] = propili;
 
         details[sz] = {
 
-            details:totalDetails,
+            details:
+            totalDetails,
 
-            perReika:perReika,
+            perReika:
+            perReika,
 
-            reiki:reiki,
+            reiki:
+            reiki,
 
-            propili:propili
+            propili:
+            propili
         };
     });
 
-    // вывод
+    const counted = {};
+
+    let html = '';
+
+    let total = 0;
+
+    shareText =
+    '📐 План прорезов\n\n';
 
     items.forEach(it=>{
 
         let cw = 0;
+
         let ch = 0;
 
         if(!counted[it.w]){
@@ -288,7 +418,7 @@ function calc(){
             counted[it.h] = true;
         }
 
-        totalCuts += cw + ch;
+        total += cw + ch;
 
         const dw = details[it.w];
 
@@ -298,56 +428,126 @@ function calc(){
 
         <div class="card">
 
-            <div class="title">
-                📏 ${it.w}×${it.h} — ${it.q} шт.
+            <div class="card-title">
+            📏 ${it.w}×${it.h}
+            — ${it.q} шт.
             </div>
 
             <div class="row">
-                <span>Прорезов в ${it.w}</span>
-                <span class="green">${cw}</span>
+
+                <span>
+                Прорезов в ${it.w}
+                </span>
+
+                <span class="green">
+                ${cw}
+                </span>
+
             </div>
 
             <div class="row">
-                <span>Прорезов в ${it.h}</span>
-                <span class="green">${ch}</span>
+
+                <span>
+                Прорезов в ${it.h}
+                </span>
+
+                <span class="green">
+                ${ch}
+                </span>
+
             </div>
 
             <div class="detail">
 
-                ${it.w}см:
-                деталей ${dw.details},
-                ${dw.perReika} шт/рейка,
-                реек ${dw.reiki},
-                прорезов ${dw.propili}
+            ${it.w}см:
+            деталей ${dw.details},
+            ${dw.perReika} шт/рейка,
+            реек ${dw.reiki},
+            прорезов ${dw.propili}
 
-                <br><br>
+            <br><br>
 
-                ${it.h}см:
-                деталей ${dh.details},
-                ${dh.perReika} шт/рейка,
-                реек ${dh.reiki},
-                прорезов ${dh.propili}
+            ${it.h}см:
+            деталей ${dh.details},
+            ${dh.perReika} шт/рейка,
+            реек ${dh.reiki},
+            прорезов ${dh.propili}
 
             </div>
 
         </div>
         `;
+
+        shareText +=
+        `📏 ${it.w}×${it.h} — ${it.q} шт.\n` +
+
+        `• ${it.w}см → ${cw} прорезов\n` +
+
+        `• ${it.h}см → ${ch} прорезов\n\n`;
     });
 
     html += `
+
     <div class="summary">
-        🔪 Всего прорезов: ${totalCuts}
+
+        🔪 Всего прорезов:
+        ${total}
+
     </div>
     `;
 
-    results.innerHTML = html;
+    shareText +=
+    `🔪 Всего прорезов: ${total}`;
+
+    document
+    .getElementById('results')
+    .innerHTML = html;
 }
 
-function clearInput(){
+function shareResult(){
 
-    document.getElementById('input').value='';
+    if(!shareText){
 
-    document.getElementById('results').innerHTML='';
+        alert(
+        'Сначала сделайте расчёт'
+        );
+
+        return;
+    }
+
+    if(navigator.share){
+
+        navigator.share({
+
+            title:
+            'План прорезов',
+
+            text:
+            shareText
+        });
+    }
+    else{
+
+        navigator.clipboard
+        .writeText(shareText);
+
+        alert(
+        'Текст скопирован'
+        );
+    }
+}
+
+function clearAll(){
+
+    document
+    .getElementById('input')
+    .value = '';
+
+    document
+    .getElementById('results')
+    .innerHTML = '';
+
+    shareText = '';
 }
 
 </script>
