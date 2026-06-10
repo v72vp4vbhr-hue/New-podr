@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Раскрой МДФ">
+    <meta name="theme-color" content="#007aff">
     <title>Раскрой МДФ</title>
+    
+    <!-- Иконки для рабочего стола и телефона -->
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -194,7 +203,7 @@
 
 <div class="header">
     <div class="header-icon">
-        <img src="icon.png" alt="пила" onerror="this.style.display='none'">
+        <img src="icon.png" alt="пила">
     </div>
     <div class="header-text">
         <h1>Раскрой МДФ</h1>
@@ -321,26 +330,16 @@ function runCalc() {
         let packs = Math.floor(totalSticks / packSize);
         let loose = totalSticks % packSize;
         
-        let totalUsed = 0;
-        for (let item of plan) {
-            let used = 0;
-            for (let i=0; i<lengths.length; i++) {
-                used += item.pattern[i] * lengths[i];
-            }
-            totalUsed += used * item.count;
-        }
-        let efficiency = (totalUsed / (totalSticks * slatLen) * 100).toFixed(1);
-        
+        // Только 3 показателя: Всего реек, Пачек, Остаток
         document.getElementById('stats_area').innerHTML = `
             <div class="results-grid">
                 <div class="result-item"><div class="value">${totalSticks} шт</div><div class="label">Всего реек</div></div>
                 <div class="result-item"><div class="value">${packs}</div><div class="label">Пачек</div></div>
                 <div class="result-item"><div class="value">${loose}</div><div class="label">Остаток</div></div>
-                <div class="result-item"><div class="value">${efficiency}%</div><div class="label">Использование</div></div>
             </div>
         `;
         
-        let waText = `📦 ЗАКАЗ В РАСПИЛ\nВсего реек: ${totalSticks} шт (${packs} пач. + ${loose} шт.)\nИспользование: ${efficiency}%\n\n🛠 КАРТА РАСПИЛА:\n`;
+        let waText = `📦 ЗАКАЗ В РАСПИЛ\nВсего реек: ${totalSticks} шт (${packs} пач. + ${loose} шт.)\n\n🛠 КАРТА РАСПИЛА:\n`;
         let htmlMap = '';
         
         for (let idx=0; idx<plan.length; idx++) {
@@ -350,7 +349,6 @@ function runCalc() {
             let lCount = item.count % packSize;
             let countTxt = pCount > 0 ? (pCount + ' пач.' + (lCount > 0 ? ` и ${lCount} шт.` : '')) : (lCount + ' шт.');
             
-            // Собираем количество каждой длины
             let counts = {};
             for (let i=0; i<lengths.length; i++) {
                 if (item.pattern[i] > 0) {
@@ -358,7 +356,6 @@ function runCalc() {
                 }
             }
             
-            // Формируем читаемую строку: "40 см — 6 шт, 30 см — 3 шт"
             let partsList = [];
             for (let len in counts) {
                 partsList.push(`${len} см — ${counts[len]} шт`);
@@ -371,10 +368,8 @@ function runCalc() {
             }
             let rest = slatLen - usedLenTotal;
             
-            // Текст для WhatsApp
             waText += `\n${idx+1}. Пилить: ${countTxt} (${item.count} реек)\n${partsText}${rest > 0.1 ? `, отход ${rest.toFixed(1)} см` : ''}\n`;
             
-            // Визуальная полоска
             let visual = '<div class="visual-slat">';
             let visUsed = 0;
             for (let i=0; i<lengths.length; i++) {
