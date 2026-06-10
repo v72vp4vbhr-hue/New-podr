@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Раскрой МДФ">
-    <title>Раскрой МДФ — Профессиональный калькулятор</title>
+    <title>Раскрой МДФ — Профессиональный калькулятор раскроя</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
             --accent-light: #e3f2ff;
             --border: #e9e9ef;
             --success: #34c759;
-            --waste-bg: #f2f2f5;
+            --waste-bg: #e9e9ef;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
             --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
         }
@@ -52,7 +52,7 @@
             line-height: 1.4;
         }
 
-        /* Шапка с иконкой и заголовками */
+        /* Шапка с иконкой */
         .header {
             display: flex;
             align-items: center;
@@ -87,7 +87,6 @@
             font-weight: 450;
         }
 
-        /* Карточки */
         .card {
             background: var(--card);
             border-radius: 20px;
@@ -104,14 +103,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-        .section-title span {
-            background: var(--accent-light);
-            border-radius: 30px;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--accent);
         }
 
         label {
@@ -135,7 +126,6 @@
             color: var(--text-primary);
             margin-bottom: 20px;
             outline: none;
-            transition: all 0.1s;
         }
         textarea:focus, input:focus {
             border-color: var(--accent);
@@ -210,6 +200,32 @@
             background: #25a645;
         }
 
+        /* Визуальная полоска — синие сегменты как в первом варианте */
+        .visual-slat {
+            height: 44px;
+            background: var(--waste-bg);
+            display: flex;
+            margin: 16px 0 12px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 0.5px solid var(--border);
+        }
+        .slat-part {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            height: 100%;
+            background: var(--accent);
+            color: white;
+            border-right: 0.5px solid rgba(0,0,0,0.05);
+        }
+        .color-waste {
+            background: var(--waste-bg);
+            color: var(--text-secondary);
+        }
+
         .instruction-card {
             background: var(--bg);
             border-radius: 18px;
@@ -219,39 +235,18 @@
         }
         .inst-header {
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-size: 16px;
             color: var(--accent);
         }
         .pattern-text {
             font-family: ui-monospace, monospace;
-            font-size: 15px;
+            font-size: 14px;
             background: var(--card);
             padding: 8px 12px;
             border-radius: 12px;
-            margin: 12px 0;
+            margin: 8px 0;
             word-break: break-word;
-        }
-        .visual-slat {
-            height: 44px;
-            background: var(--waste-bg);
-            display: flex;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-top: 8px;
-        }
-        .slat-part {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-            background: var(--accent);
-            color: white;
-        }
-        .color-waste {
-            background: var(--waste-bg);
-            color: var(--text-secondary);
         }
 
         #text_for_whatsapp {
@@ -272,8 +267,8 @@
 
 <div class="header">
     <div class="header-icon">
-        <!-- Ваша иконка (пила с линейкой) — вставлена как base64, но вы можете заменить на свой URL -->
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAHHSURBVHgB7ZvBTsJAEIbbYiQm3nwBHsFEYsKJF5/Ag/ECJmiUeOANiPGgRsAD4Il4gHhABXkBY7vtwk5nZ3dKd/blTz5o2Z1v/9nZ2W0HAQAAAAAAAAAAAAAAAAAAAADgjyQSLjRnjzrrSg64ujgvsE0mE/uO7BDD6GY6mdh3mtj3m0zSLKOXdzNngDOTaZx0M8saT7JsZ1nmbGZZa2y2jmUVPfS1LGDZnqHZMoSnvsFANvN2x7LmcNk2wz7NcpALt3A7m+U6jzhcN2HZabtJqBQoBAmCbIEmLSsrZ+mykKZQCAgFgYJAUBAoCAQFgaIgUBQICgJFgaAgUBQICoJUECjKqU4Clb2lQGw3CZX7I0GIEGJ8qBKoyrUZvy6olWBFoGndRlbkdiMQVrO7NyvLxQjUZk1Dq9zP+XcKfRUC+XHXrOr4+/l/rzC8t6u8rRQGVom9rB3Bdyb3ImB95+85iNUtEeSlqBvBd6cwvo7PIXhuhqRitQrJ3QhUvT+QHyQNrnC9XvHcUhb0qA4BAAAAAAAAAAAAAAAAAMAu8g5Y7lB/m90p0zTOHIYh+2h27BXwbSo5gPq+KvyBMA9vLszDHwjzAN8BKrUCYbqnXUIAAAAASUVORK5CYII=" alt="Пила с линейкой">
+        <!-- Ваша иконка из той же папки -->
+        <img src="icon.png" alt="Пила с линейкой" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%23007aff%27%3E%3Cpath d=%27M10 2v2h4V2h-4zM8 4v2h8V4H8zM6 6v2h12V6H6zM4 8v2h16V8H4zM3 10v2h18v-2H3zM5 12v2h14v-2H5zM7 14v2h10v-2H7zM9 16v2h6v-2H9z%27/%3E%3C/svg%3E'">
     </div>
     <div class="header-text">
         <h1>Раскрой МДФ</h1>
@@ -330,6 +325,7 @@
             if (Object.keys(demands).length === 0) throw new Error('Формат: 30х20 - 350');
 
             let unique = Object.keys(demands).map(Number).sort((a,b)=>b-a);
+            
             // генерация patterns
             let patterns = [];
             let curPat = new Array(unique.length).fill(0);
@@ -390,7 +386,7 @@
             let packs = Math.floor(total / packSize);
             let loose = total % packSize;
 
-            // процент использования (по длинам)
+            // процент использования
             let totalUsedLen = 0, totalPossibleLen = total * slatLen;
             for (let item of plan) {
                 let usedInPattern = 0;
@@ -401,7 +397,6 @@
             }
             let efficiency = (totalUsedLen / totalPossibleLen * 100).toFixed(1);
 
-            // UI статистика
             const statsHtml = `<div class="results-grid">
                 <div class="result-item"><div class="value">${total} шт</div><div class="label">Всего реек</div></div>
                 <div class="result-item"><div class="value">${packs}</div><div class="label">Пачек</div></div>
@@ -429,9 +424,10 @@
                         usedLen += unique[i] + blade;
                     }
                 }
-                waText += parts.join(' + ') + `\nОстаток: ${(slatLen - usedLen).toFixed(1)} см\n`;
+                let restLen = slatLen - usedLen;
+                waText += parts.join(' + ') + (restLen > 0.1 ? ` + отход ${restLen.toFixed(1)}` : '') + `\nОстаток: ${restLen.toFixed(1)} см\n`;
                 
-                // визуальная полоска
+                // ВИЗУАЛЬНАЯ ПОЛОСКА — синие сегменты
                 let visual = '<div class="visual-slat">';
                 let visUsed = 0;
                 for (let i=0; i<unique.length; i++) {
@@ -440,8 +436,8 @@
                         visUsed += unique[i] + blade;
                     }
                 }
-                let restLen = slatLen - visUsed;
-                if (restLen > 0.1) visual += `<div class="slat-part color-waste" style="flex-grow: ${restLen}">${restLen.toFixed(1)}</div>`;
+                let visualRest = slatLen - visUsed;
+                if (visualRest > 0.1) visual += `<div class="slat-part color-waste" style="flex-grow: ${visualRest}">${visualRest.toFixed(1)}</div>`;
                 visual += '</div>';
                 
                 let patternText = '<div class="pattern-text">📏 ' + parts.join(' + ') + (restLen>0.1 ? ` + отход ${restLen.toFixed(1)}` : '') + '</div>';
