@@ -4,55 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Раскрой МДФ">
-    <title>Раскрой МДФ — Профессиональный калькулятор раскроя</title>
+    <title>Раскрой МДФ</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg: #f5f5f7;
             --card: #ffffff;
-            --text-primary: #1c1c1e;
+            --text: #1c1c1e;
             --text-secondary: #6c6c70;
             --accent: #007aff;
-            --accent-light: #e3f2ff;
             --border: #e9e9ef;
             --success: #34c759;
-            --waste-bg: #e9e9ef;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
-            --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
         }
-
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg: #000000;
                 --card: #1c1c1e;
-                --text-primary: #ffffff;
+                --text: #ffffff;
                 --text-secondary: #8e8e93;
                 --accent: #0a84ff;
-                --accent-light: #1c3a5c;
                 --border: #2c2c2e;
                 --success: #32d74b;
-                --waste-bg: #2c2c2e;
-                --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 0.5px rgba(255, 255, 255, 0.02);
-                --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 0 0.5px rgba(255, 255, 255, 0.02);
             }
         }
-
         body {
             background: var(--bg);
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
             padding: 20px 16px 40px;
-            line-height: 1.4;
         }
-
-        /* Шапка с иконкой */
         .header {
             display: flex;
             align-items: center;
@@ -62,59 +42,40 @@
         .header-icon {
             width: 56px;
             height: 56px;
-            background: var(--accent-light);
+            background: rgba(0, 122, 255, 0.1);
             border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: var(--shadow-sm);
         }
         .header-icon img {
             width: 36px;
             height: 36px;
             object-fit: contain;
         }
-        .header-text h1 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-        .header-text p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 450;
-        }
-
+        .header-text h1 { font-size: 28px; font-weight: 700; }
+        .header-text p { font-size: 14px; color: var(--text-secondary); }
+        
         .card {
             background: var(--card);
             border-radius: 20px;
             padding: 24px 20px;
             margin-bottom: 20px;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04), 0 0 0 0.5px rgba(0,0,0,0.02);
         }
-
         .section-title {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 20px;
-            letter-spacing: -0.2px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
-
         label {
             font-size: 13px;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
             color: var(--text-secondary);
             display: block;
             margin-bottom: 6px;
         }
-
         textarea, input {
             width: 100%;
             background: var(--bg);
@@ -122,31 +83,17 @@
             border-radius: 14px;
             padding: 14px 16px;
             font-size: 16px;
-            font-family: inherit;
-            color: var(--text-primary);
+            color: var(--text);
             margin-bottom: 20px;
             outline: none;
         }
         textarea:focus, input:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
         }
-        textarea {
-            font-family: ui-monospace, monospace;
-            font-size: 14px;
-            resize: vertical;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .input-group > div {
-            flex: 1;
-            min-width: 100px;
-        }
-
+        .input-group { display: flex; gap: 12px; flex-wrap: wrap; }
+        .input-group > div { flex: 1; min-width: 100px; }
+        
         button {
             background: var(--accent);
             color: white;
@@ -157,14 +104,10 @@
             font-weight: 600;
             width: 100%;
             cursor: pointer;
-            transition: all 0.15s ease;
             margin-top: 8px;
         }
-        button:active {
-            transform: scale(0.97);
-            background: #005fc1;
-        }
-
+        button:active { transform: scale(0.97); }
+        
         .results-grid {
             display: flex;
             flex-wrap: wrap;
@@ -179,36 +122,23 @@
             text-align: center;
             border: 0.5px solid var(--border);
         }
-        .result-item .value {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--accent);
-            line-height: 1.2;
-        }
-        .result-item .label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 6px;
-        }
-
+        .result-item .value { font-size: 32px; font-weight: 700; color: var(--accent); }
+        .result-item .label { font-size: 13px; color: var(--text-secondary); margin-top: 6px; }
+        
         .copy-btn {
             background: var(--success);
             color: #000;
             margin-bottom: 20px;
         }
-        .copy-btn:active {
-            background: #25a645;
-        }
-
-        /* Визуальная полоска — синие сегменты как в первом варианте */
+        
+        /* визуальная полоска с синими сегментами */
         .visual-slat {
             height: 44px;
-            background: var(--waste-bg);
+            background: #e9e9ef;
             display: flex;
             margin: 16px 0 12px 0;
             border-radius: 12px;
             overflow: hidden;
-            border: 0.5px solid var(--border);
         }
         .slat-part {
             display: flex;
@@ -216,16 +146,14 @@
             justify-content: center;
             font-size: 12px;
             font-weight: 600;
-            height: 100%;
             background: var(--accent);
             color: white;
-            border-right: 0.5px solid rgba(0,0,0,0.05);
         }
         .color-waste {
-            background: var(--waste-bg);
-            color: var(--text-secondary);
+            background: #e9e9ef;
+            color: #8e8e93;
         }
-
+        
         .instruction-card {
             background: var(--bg);
             border-radius: 18px;
@@ -240,15 +168,14 @@
             color: var(--accent);
         }
         .pattern-text {
-            font-family: ui-monospace, monospace;
+            font-family: monospace;
             font-size: 14px;
             background: var(--card);
             padding: 8px 12px;
             border-radius: 12px;
             margin: 8px 0;
-            word-break: break-word;
         }
-
+        
         #text_for_whatsapp {
             width: 100%;
             background: var(--bg);
@@ -267,8 +194,7 @@
 
 <div class="header">
     <div class="header-icon">
-        <!-- Ваша иконка из той же папки -->
-        <img src="icon.png" alt="Пила с линейкой" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%23007aff%27%3E%3Cpath d=%27M10 2v2h4V2h-4zM8 4v2h8V4H8zM6 6v2h12V6H6zM4 8v2h16V8H4zM3 10v2h18v-2H3zM5 12v2h14v-2H5zM7 14v2h10v-2H7zM9 16v2h6v-2H9z%27/%3E%3C/svg%3E'">
+        <img src="icon.png" alt="пила" onerror="this.style.display='none'">
     </div>
     <div class="header-text">
         <h1>Раскрой МДФ</h1>
@@ -281,193 +207,208 @@
     <label>Заказ (ШхВ - Кол-во):</label>
     <textarea id="order_input">30х20 - 350
 40х25 - 200</textarea>
-
     <div class="input-group">
         <div><label>Рейка (см):</label><input type="number" id="slat_len" value="272" step="any"></div>
         <div><label>В пачке (шт):</label><input type="number" id="pack_size" value="26"></div>
         <div><label>Диск (мм):</label><input type="number" id="blade" value="3" step="any"></div>
     </div>
-    <button onclick="runCalculation()">🪚 РАССЧИТАТЬ</button>
+    <button onclick="runCalc()">🪚 РАССЧИТАТЬ</button>
 </div>
 
 <div class="card" id="results" style="display: none;">
     <div class="section-title">📊 Результаты</div>
     <div id="stats_area"></div>
-    
-    <div class="section-title" style="margin-top: 20px;">📋 Заказ в распил</div>
+    <div class="section-title">📋 Заказ в распил</div>
     <textarea id="text_for_whatsapp" readonly></textarea>
-    <button class="copy-btn" id="copy_btn" onclick="copyToClipboard()">📲 Скопировать для WhatsApp</button>
-    
+    <button class="copy-btn" onclick="copyText()">📲 Скопировать для WhatsApp</button>
     <div class="section-title">🛠 Схема распила</div>
     <div id="map_area"></div>
 </div>
 
 <script>
-    function runCalculation() {
-        try {
-            const text = document.getElementById('order_input').value;
-            let slatLen = parseFloat(document.getElementById('slat_len').value);
-            let packSize = parseInt(document.getElementById('pack_size').value);
-            let blade = parseFloat(document.getElementById('blade').value) / 10;
-
-            if (!text.trim()) throw new Error('Введите заказ');
-            if (isNaN(slatLen) || slatLen <= 0) throw new Error('Длина рейки > 0');
-            if (isNaN(packSize) || packSize <= 0) packSize = 1;
-
-            const regex = /(\d+(?:\.\d+)?)[\sхxX×*](\d+(?:\.\d+)?)[\s\-:=]+(\d+)/g;
-            let demands = {};
-            let match;
-            while ((match = regex.exec(text)) !== null) {
-                let w = parseFloat(match[1]), h = parseFloat(match[2]), qty = parseInt(match[3]);
-                demands[w] = (demands[w] || 0) + qty * 2;
-                demands[h] = (demands[h] || 0) + qty * 2;
+function runCalc() {
+    try {
+        let orderText = document.getElementById('order_input').value;
+        let slatLen = parseFloat(document.getElementById('slat_len').value);
+        let packSize = parseInt(document.getElementById('pack_size').value);
+        let bladeMM = parseFloat(document.getElementById('blade').value);
+        let blade = bladeMM / 10;
+        
+        if (!orderText.trim()) throw new Error('Введите заказ');
+        if (isNaN(slatLen) || slatLen <= 0) throw new Error('Длина рейки > 0');
+        
+        let demands = {};
+        let regex = /(\d+(?:\.\d+)?)[\sхxX×*](\d+(?:\.\d+)?)[\s\-:=]+(\d+)/g;
+        let m;
+        while ((m = regex.exec(orderText)) !== null) {
+            let w = parseFloat(m[1]), h = parseFloat(m[2]), qty = parseInt(m[3]);
+            demands[w] = (demands[w] || 0) + qty * 2;
+            demands[h] = (demands[h] || 0) + qty * 2;
+        }
+        if (Object.keys(demands).length === 0) throw new Error('Формат: 30х20 - 350');
+        
+        let lengths = Object.keys(demands).map(Number).sort((a,b)=>b-a);
+        
+        // генерация всех возможных комбинаций
+        let patterns = [];
+        let cur = new Array(lengths.length).fill(0);
+        function generate(idx, usedLen) {
+            if (idx === lengths.length) {
+                if (usedLen > 0) patterns.push([...cur]);
+                return;
             }
-            if (Object.keys(demands).length === 0) throw new Error('Формат: 30х20 - 350');
-
-            let unique = Object.keys(demands).map(Number).sort((a,b)=>b-a);
+            let maxCnt = Math.floor((slatLen - usedLen) / (lengths[idx] + blade));
+            for (let i = maxCnt; i >= 0; i--) {
+                cur[idx] = i;
+                generate(idx+1, usedLen + i * (lengths[idx] + blade));
+            }
+        }
+        generate(0, 0);
+        
+        let need = {};
+        for (let k in demands) need[k] = demands[k];
+        
+        let plan = [];
+        let safety = 0;
+        
+        function hasNeed() {
+            for (let k in need) if (need[k] > 0) return true;
+            return false;
+        }
+        
+        while (hasNeed() && safety++ < 2000) {
+            let bestPattern = null;
+            let bestScore = -Infinity;
             
-            // генерация patterns
-            let patterns = [];
-            let curPat = new Array(unique.length).fill(0);
-            function gen(idx, curLen) {
-                if (idx === unique.length) {
-                    if (curLen > 0) patterns.push([...curPat]);
-                    return;
-                }
-                let len = unique[idx];
-                let maxCnt = Math.floor((slatLen - curLen) / (len + blade));
-                for (let i = maxCnt; i >= 0; i--) {
-                    curPat[idx] = i;
-                    gen(idx+1, curLen + i*(len+blade));
-                }
-            }
-            gen(0,0);
-
-            let remaining = {};
-            for (let k in demands) remaining[k] = demands[k];
-
-            let plan = [];
-            let safety = 0;
-            const hasRemaining = () => Object.values(remaining).some(v=>v>0);
-
-            while (hasRemaining() && safety++ < 2000) {
-                let bestP = null, bestScore = -Infinity;
-                for (let p of patterns) {
-                    let used = 0, score = 0, hits = false;
-                    for (let i=0; i<unique.length; i++) {
-                        let len = unique[i];
-                        let cnt = p[i];
-                        if (cnt === 0) continue;
-                        used += cnt * (len + blade);
-                        if (remaining[len] > 0) {
-                            score += Math.min(cnt, remaining[len]) * len;
-                            hits = true;
-                        }
-                    }
-                    if (!hits) continue;
-                    let rest = slatLen - used;
-                    score -= rest;
-                    if (score > bestScore) { bestScore = score; bestP = p; }
-                }
-                if (!bestP) break;
-
-                let steps = Infinity;
-                for (let i=0; i<unique.length; i++) {
-                    if (bestP[i] > 0 && remaining[unique[i]] > 0) {
-                        steps = Math.min(steps, Math.ceil(remaining[unique[i]] / bestP[i]));
+            for (let p of patterns) {
+                let usedLen = 0;
+                let score = 0;
+                let hits = false;
+                for (let i=0; i<lengths.length; i++) {
+                    let cnt = p[i];
+                    if (cnt === 0) continue;
+                    let len = lengths[i];
+                    usedLen += cnt * (len + blade);
+                    if (need[len] > 0) {
+                        score += Math.min(cnt, need[len]) * len;
+                        hits = true;
                     }
                 }
-                if (!isFinite(steps)) steps = 1;
-                for (let i=0; i<unique.length; i++) remaining[unique[i]] -= bestP[i] * steps;
-                plan.push({pattern: bestP, count: steps});
-            }
-
-            let total = plan.reduce((s,item)=>s+item.count,0);
-            let packs = Math.floor(total / packSize);
-            let loose = total % packSize;
-
-            // процент использования
-            let totalUsedLen = 0, totalPossibleLen = total * slatLen;
-            for (let item of plan) {
-                let usedInPattern = 0;
-                for (let i=0; i<unique.length; i++) {
-                    usedInPattern += item.pattern[i] * unique[i];
+                if (!hits) continue;
+                let waste = slatLen - usedLen;
+                score -= waste;
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestPattern = p;
                 }
-                totalUsedLen += usedInPattern * item.count;
             }
-            let efficiency = (totalUsedLen / totalPossibleLen * 100).toFixed(1);
-
-            const statsHtml = `<div class="results-grid">
-                <div class="result-item"><div class="value">${total} шт</div><div class="label">Всего реек</div></div>
+            if (!bestPattern) break;
+            
+            let steps = Infinity;
+            for (let i=0; i<lengths.length; i++) {
+                if (bestPattern[i] > 0 && need[lengths[i]] > 0) {
+                    steps = Math.min(steps, Math.ceil(need[lengths[i]] / bestPattern[i]));
+                }
+            }
+            if (!isFinite(steps)) steps = 1;
+            
+            for (let i=0; i<lengths.length; i++) {
+                need[lengths[i]] -= bestPattern[i] * steps;
+            }
+            plan.push({ pattern: bestPattern, count: steps });
+        }
+        
+        let totalSticks = plan.reduce((s,item)=>s+item.count,0);
+        let packs = Math.floor(totalSticks / packSize);
+        let loose = totalSticks % packSize;
+        
+        // процент использования
+        let totalUsed = 0;
+        for (let item of plan) {
+            let used = 0;
+            for (let i=0; i<lengths.length; i++) {
+                used += item.pattern[i] * lengths[i];
+            }
+            totalUsed += used * item.count;
+        }
+        let efficiency = (totalUsed / (totalSticks * slatLen) * 100).toFixed(1);
+        
+        // статистика
+        document.getElementById('stats_area').innerHTML = `
+            <div class="results-grid">
+                <div class="result-item"><div class="value">${totalSticks} шт</div><div class="label">Всего реек</div></div>
                 <div class="result-item"><div class="value">${packs}</div><div class="label">Пачек</div></div>
                 <div class="result-item"><div class="value">${loose}</div><div class="label">Остаток</div></div>
                 <div class="result-item"><div class="value">${efficiency}%</div><div class="label">Использование</div></div>
-            </div>`;
-            document.getElementById('stats_area').innerHTML = statsHtml;
-
-            let waText = `📦 ЗАКАЗ В РАСПИЛ\nВсего реек: ${total} шт (${packs} пач. + ${loose} шт.)\nИспользование материала: ${efficiency}%\n\n🛠 КАРТА РАСПИЛА:\n`;
-            let htmlMap = '';
-
-            for (let idx=0; idx<plan.length; idx++) {
-                let item = plan[idx];
-                if (item.count === 0) continue;
-                let p = Math.floor(item.count/packSize);
-                let l = item.count % packSize;
-                let countTxt = p>0 ? (p + ' пач.' + (l>0 ? ` и ${l} шт.` : '')) : (l + ' шт.');
-                waText += `\n${idx+1}. Пилить: ${countTxt} (всего ${item.count} реек)\nСхема: `;
-                
-                let parts = [];
-                let usedLen = 0;
-                for (let i=0; i<unique.length; i++) {
-                    for (let c=0; c<item.pattern[i]; c++) {
-                        parts.push(unique[i]);
-                        usedLen += unique[i] + blade;
-                    }
+            </div>
+        `;
+        
+        let waText = `📦 ЗАКАЗ В РАСПИЛ\nВсего реек: ${totalSticks} шт (${packs} пач. + ${loose} шт.)\nИспользование: ${efficiency}%\n\n🛠 КАРТА РАСПИЛА:\n`;
+        let htmlMap = '';
+        
+        for (let idx=0; idx<plan.length; idx++) {
+            let item = plan[idx];
+            if (item.count === 0) continue;
+            let pCount = Math.floor(item.count / packSize);
+            let lCount = item.count % packSize;
+            let countTxt = pCount > 0 ? (pCount + ' пач.' + (lCount > 0 ? ` и ${lCount} шт.` : '')) : (lCount + ' шт.');
+            
+            let parts = [];
+            let usedLenTotal = 0;
+            for (let i=0; i<lengths.length; i++) {
+                for (let c=0; c<item.pattern[i]; c++) {
+                    parts.push(lengths[i]);
+                    usedLenTotal += lengths[i] + blade;
                 }
-                let restLen = slatLen - usedLen;
-                waText += parts.join(' + ') + (restLen > 0.1 ? ` + отход ${restLen.toFixed(1)}` : '') + `\nОстаток: ${restLen.toFixed(1)} см\n`;
-                
-                // ВИЗУАЛЬНАЯ ПОЛОСКА — синие сегменты
-                let visual = '<div class="visual-slat">';
-                let visUsed = 0;
-                for (let i=0; i<unique.length; i++) {
-                    for (let c=0; c<item.pattern[i]; c++) {
-                        visual += `<div class="slat-part" style="flex-grow: ${unique[i]}">${unique[i]}</div>`;
-                        visUsed += unique[i] + blade;
-                    }
-                }
-                let visualRest = slatLen - visUsed;
-                if (visualRest > 0.1) visual += `<div class="slat-part color-waste" style="flex-grow: ${visualRest}">${visualRest.toFixed(1)}</div>`;
-                visual += '</div>';
-                
-                let patternText = '<div class="pattern-text">📏 ' + parts.join(' + ') + (restLen>0.1 ? ` + отход ${restLen.toFixed(1)}` : '') + '</div>';
-                htmlMap += `<div class="instruction-card">
-                    <div class="inst-header">🪚 Рез №${idx+1} — Пилить: ${countTxt}</div>
-                    ${patternText}
-                    ${visual}
-                </div>`;
             }
-            document.getElementById('text_for_whatsapp').value = waText;
-            document.getElementById('text_for_whatsapp').style.display = 'block';
-            document.getElementById('map_area').innerHTML = htmlMap;
-            document.getElementById('results').style.display = 'block';
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-        } catch(e) {
-            alert('Ошибка: ' + e.message);
+            let rest = slatLen - usedLenTotal;
+            
+            waText += `\n${idx+1}. Пилить: ${countTxt} (всего ${item.count} реек)\nСхема: ${parts.join(' + ')}${rest > 0.1 ? ` + отход ${rest.toFixed(1)}` : ''}\n`;
+            
+            // визуальная полоска
+            let visual = '<div class="visual-slat">';
+            let visUsed = 0;
+            for (let i=0; i<lengths.length; i++) {
+                for (let c=0; c<item.pattern[i]; c++) {
+                    visual += `<div class="slat-part" style="flex-grow: ${lengths[i]}">${lengths[i]}</div>`;
+                    visUsed += lengths[i] + blade;
+                }
+            }
+            let visRest = slatLen - visUsed;
+            if (visRest > 0.1) visual += `<div class="slat-part color-waste" style="flex-grow: ${visRest}">${visRest.toFixed(1)}</div>`;
+            visual += '</div>';
+            
+            htmlMap += `
+                <div class="instruction-card">
+                    <div class="inst-header">🪚 Рез №${idx+1} — Пилить: ${countTxt}</div>
+                    <div class="pattern-text">📏 ${parts.join(' + ')}${rest > 0.1 ? ` + отход ${rest.toFixed(1)}` : ''}</div>
+                    ${visual}
+                </div>
+            `;
         }
+        
+        document.getElementById('text_for_whatsapp').value = waText;
+        document.getElementById('text_for_whatsapp').style.display = 'block';
+        document.getElementById('map_area').innerHTML = htmlMap;
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        
+    } catch(e) {
+        alert('Ошибка: ' + e.message);
     }
+}
 
-    function copyToClipboard() {
-        let txt = document.getElementById('text_for_whatsapp');
-        txt.select();
-        txt.setSelectionRange(0, 99999);
-        navigator.clipboard.writeText(txt.value).then(() => {
-            let btn = document.getElementById('copy_btn');
-            let orig = btn.innerHTML;
-            btn.innerHTML = '✅ Скопировано!';
-            setTimeout(() => btn.innerHTML = orig, 2000);
-        }).catch(() => alert('Нажмите Ctrl+C'));
-    }
+function copyText() {
+    let txt = document.getElementById('text_for_whatsapp');
+    txt.select();
+    txt.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(txt.value).then(() => {
+        let btn = document.querySelector('.copy-btn');
+        let orig = btn.innerHTML;
+        btn.innerHTML = '✅ Скопировано!';
+        setTimeout(() => btn.innerHTML = orig, 2000);
+    });
+}
 </script>
 </body>
 </html>
