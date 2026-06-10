@@ -2,13 +2,12 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Раскрой МДФ">
-    <title>Раскрой МДФ</title>
+    <title>Раскрой МДФ — Профессиональный калькулятор</title>
     <style>
-        /* ----- Сброс и переменные ----- */
         * {
             margin: 0;
             padding: 0;
@@ -16,17 +15,15 @@
         }
 
         :root {
-            /* светлая тема (по умолчанию) */
             --bg: #f5f5f7;
             --card: #ffffff;
-            --text-primary: #1d1c1f;
+            --text-primary: #1c1c1e;
             --text-secondary: #6c6c70;
             --accent: #007aff;
-            --accent-pressed: #005fc1;
+            --accent-light: #e3f2ff;
             --border: #e9e9ef;
             --success: #34c759;
-            --waste-bg: #e9e9ef;
-            --waste-text: #8e8e93;
+            --waste-bg: #f2f2f5;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
             --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
         }
@@ -36,44 +33,85 @@
                 --bg: #000000;
                 --card: #1c1c1e;
                 --text-primary: #ffffff;
-                --text-secondary: #98989e;
+                --text-secondary: #8e8e93;
                 --accent: #0a84ff;
-                --accent-pressed: #409cff;
+                --accent-light: #1c3a5c;
                 --border: #2c2c2e;
                 --success: #32d74b;
                 --waste-bg: #2c2c2e;
-                --waste-text: #8e8e93;
                 --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 0.5px rgba(255, 255, 255, 0.02);
                 --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 0 0.5px rgba(255, 255, 255, 0.02);
             }
         }
 
         body {
-            background-color: var(--bg);
+            background: var(--bg);
             color: var(--text-primary);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
-            line-height: 1.45;
-            padding: 20px 16px 32px 16px;
-            -webkit-font-smoothing: antialiased;
+            padding: 20px 16px 40px;
+            line-height: 1.4;
         }
 
-        /* карточки */
+        /* Шапка с иконкой и заголовками */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .header-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--accent-light);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .header-icon img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+        .header-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        .header-text p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 450;
+        }
+
+        /* Карточки */
         .card {
             background: var(--card);
             border-radius: 20px;
             padding: 24px 20px;
             margin-bottom: 20px;
             box-shadow: var(--shadow-md);
-            transition: all 0.2s ease;
-            border: none;
         }
 
-        h2 {
-            font-size: 28px;
+        .section-title {
+            font-size: 20px;
             font-weight: 600;
-            letter-spacing: -0.3px;
-            margin-bottom: 24px;
-            color: var(--text-primary);
+            margin-bottom: 20px;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title span {
+            background: var(--accent-light);
+            border-radius: 30px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent);
         }
 
         label {
@@ -82,8 +120,8 @@
             text-transform: uppercase;
             letter-spacing: 0.3px;
             color: var(--text-secondary);
-            margin-bottom: 6px;
             display: block;
+            margin-bottom: 6px;
         }
 
         textarea, input {
@@ -92,26 +130,21 @@
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 14px 16px;
-            font-size: 17px;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", monospace;
+            font-size: 16px;
+            font-family: inherit;
             color: var(--text-primary);
-            transition: all 0.1s ease;
             margin-bottom: 20px;
             outline: none;
-            -webkit-appearance: none;
+            transition: all 0.1s;
         }
-
         textarea:focus, input:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
         }
-
         textarea {
-            font-family: ui-monospace, SF Mono, monospace;
-            font-size: 15px;
-            line-height: 1.4;
+            font-family: ui-monospace, monospace;
+            font-size: 14px;
             resize: vertical;
-            min-height: 120px;
         }
 
         .input-group {
@@ -129,90 +162,96 @@
             color: white;
             border: none;
             border-radius: 14px;
-            padding: 16px 20px;
+            padding: 16px;
             font-size: 17px;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
             transition: all 0.15s ease;
             margin-top: 8px;
-            -webkit-tap-highlight-color: transparent;
         }
         button:active {
-            background: var(--accent-pressed);
-            transform: scale(0.98);
+            transform: scale(0.97);
+            background: #005fc1;
         }
 
-        .btn-copy {
-            background: var(--success);
-            color: #000;
-            margin-top: 20px;
-            box-shadow: var(--shadow-sm);
-        }
-        .btn-copy:active {
-            background: #25a645;
-            transform: scale(0.98);
-        }
-
-        /* Статистика */
-        .stat-box {
-            background: var(--bg);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 28px;
-            border: 1px solid var(--border);
-        }
-        .stat-box h3 {
-            font-size: 34px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: var(--accent);
-            margin-bottom: 8px;
-        }
-        .stat-box p {
-            font-size: 16px;
-            color: var(--text-secondary);
-        }
-
-        /* визуальная планка */
-        .visual-slat {
-            height: 44px;
-            background: var(--waste-bg);
+        .results-grid {
             display: flex;
-            margin: 16px 0 12px 0;
-            border-radius: 12px;
-            overflow: hidden;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .result-item {
+            flex: 1;
+            background: var(--bg);
+            border-radius: 18px;
+            padding: 16px;
+            text-align: center;
             border: 0.5px solid var(--border);
         }
-        .slat-part {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 600;
-            height: 100%;
-            background: var(--accent);
-            color: white;
-            border-right: 0.5px solid rgba(0,0,0,0.05);
+        .result-item .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1.2;
         }
-        .color-waste {
-            background: var(--waste-bg);
-            color: var(--waste-text);
-            font-weight: 500;
+        .result-item .label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .copy-btn {
+            background: var(--success);
+            color: #000;
+            margin-bottom: 20px;
+        }
+        .copy-btn:active {
+            background: #25a645;
         }
 
         .instruction-card {
             background: var(--bg);
             border-radius: 18px;
-            padding: 16px 18px;
-            margin-bottom: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
             border: 0.5px solid var(--border);
-            transition: all 0.1s;
         }
-        .instruction-card span {
+        .inst-header {
             font-weight: 600;
-            font-size: 17px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: var(--accent);
+        }
+        .pattern-text {
+            font-family: ui-monospace, monospace;
+            font-size: 15px;
+            background: var(--card);
+            padding: 8px 12px;
+            border-radius: 12px;
+            margin: 12px 0;
+            word-break: break-word;
+        }
+        .visual-slat {
+            height: 44px;
+            background: var(--waste-bg);
+            display: flex;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .slat-part {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--accent);
+            color: white;
+        }
+        .color-waste {
+            background: var(--waste-bg);
+            color: var(--text-secondary);
         }
 
         #text_for_whatsapp {
@@ -220,221 +259,219 @@
             background: var(--bg);
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 16px;
-            font-family: ui-monospace, SF Mono, monospace;
-            font-size: 14px;
-            color: var(--text-primary);
-            margin-top: 16px;
+            padding: 14px;
+            font-family: monospace;
+            font-size: 13px;
+            margin-bottom: 12px;
             display: none;
             resize: vertical;
-        }
-
-        /* скролл */
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #c6c6c8;
-            border-radius: 10px;
-        }
-        @media (prefers-color-scheme: dark) {
-            ::-webkit-scrollbar-thumb {
-                background: #38383a;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>📐 Раскрой МДФ</h2>
-        
-        <label>Заказ (ШхВ - Кол-во):</label>
-        <textarea id="order_input" inputmode="text">30х20 - 350
-40х25 - 200</textarea>
-        
-        <div class="input-group">
-            <div><label>Рейка (см):</label><input type="number" id="slat_len" value="272" inputmode="decimal" step="any"></div>
-            <div><label>В пачке (шт):</label><input type="number" id="pack_size" value="26" inputmode="numeric"></div>
-            <div><label>Диск (мм):</label><input type="number" id="blade" value="3" inputmode="decimal" step="any"></div>
-        </div>
-        
-        <button onclick="run()">Рассчитать</button>
-    </div>
 
-    <div class="card" id="results" style="display: none;">
-        <div id="stats_area"></div>
-        <textarea id="text_for_whatsapp" readonly></textarea>
-        <button class="btn-copy" id="copy_btn" onclick="copyText()">📋 Скопировать для WhatsApp</button>
-        <div id="map_area" style="margin-top: 20px;"></div>
+<div class="header">
+    <div class="header-icon">
+        <!-- Ваша иконка (пила с линейкой) — вставлена как base64, но вы можете заменить на свой URL -->
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAHHSURBVHgB7ZvBTsJAEIbbYiQm3nwBHsFEYsKJF5/Ag/ECJmiUeOANiPGgRsAD4Il4gHhABXkBY7vtwk5nZ3dKd/blTz5o2Z1v/9nZ2W0HAQAAAAAAAAAAAAAAAAAAAADgjyQSLjRnjzrrSg64ujgvsE0mE/uO7BDD6GY6mdh3mtj3m0zSLKOXdzNngDOTaZx0M8saT7JsZ1nmbGZZa2y2jmUVPfS1LGDZnqHZMoSnvsFANvN2x7LmcNk2wz7NcpALt3A7m+U6jzhcN2HZabtJqBQoBAmCbIEmLSsrZ+mykKZQCAgFgYJAUBAoCAQFgaIgUBQICgJFgaAgUBQICoJUECjKqU4Clb2lQGw3CZX7I0GIEGJ8qBKoyrUZvy6olWBFoGndRlbkdiMQVrO7NyvLxQjUZk1Dq9zP+XcKfRUC+XHXrOr4+/l/rzC8t6u8rRQGVom9rB3Bdyb3ImB95+85iNUtEeSlqBvBd6cwvo7PIXhuhqRitQrJ3QhUvT+QHyQNrnC9XvHcUhb0qA4BAAAAAAAAAAAAAAAAAMAu8g5Y7lB/m90p0zTOHIYh+2h27BXwbSo5gPq+KvyBMA9vLszDHwjzAN8BKrUCYbqnXUIAAAAASUVORK5CYII=" alt="Пила с линейкой">
     </div>
+    <div class="header-text">
+        <h1>Раскрой МДФ</h1>
+        <p>Профессиональный калькулятор раскроя</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="section-title">📐 Параметры расчёта</div>
+    <label>Заказ (ШхВ - Кол-во):</label>
+    <textarea id="order_input">30х20 - 350
+40х25 - 200</textarea>
+
+    <div class="input-group">
+        <div><label>Рейка (см):</label><input type="number" id="slat_len" value="272" step="any"></div>
+        <div><label>В пачке (шт):</label><input type="number" id="pack_size" value="26"></div>
+        <div><label>Диск (мм):</label><input type="number" id="blade" value="3" step="any"></div>
+    </div>
+    <button onclick="runCalculation()">🪚 РАССЧИТАТЬ</button>
+</div>
+
+<div class="card" id="results" style="display: none;">
+    <div class="section-title">📊 Результаты</div>
+    <div id="stats_area"></div>
+    
+    <div class="section-title" style="margin-top: 20px;">📋 Заказ в распил</div>
+    <textarea id="text_for_whatsapp" readonly></textarea>
+    <button class="copy-btn" id="copy_btn" onclick="copyToClipboard()">📲 Скопировать для WhatsApp</button>
+    
+    <div class="section-title">🛠 Схема распила</div>
+    <div id="map_area"></div>
+</div>
 
 <script>
-function run() {
-    try {
-        var text = document.getElementById('order_input').value;
-        var slatLen = parseFloat(document.getElementById('slat_len').value);
-        var packSize = parseInt(document.getElementById('pack_size').value);
-        var blade = parseFloat(document.getElementById('blade').value) / 10;
-        
-        if (!text.trim()) { alert("Введите данные заказа!"); return; }
-        if (isNaN(slatLen) || slatLen <= 0) { alert("Укажите длину рейки > 0"); return; }
-        if (isNaN(packSize) || packSize <= 0) packSize = 1;
+    function runCalculation() {
+        try {
+            const text = document.getElementById('order_input').value;
+            let slatLen = parseFloat(document.getElementById('slat_len').value);
+            let packSize = parseInt(document.getElementById('pack_size').value);
+            let blade = parseFloat(document.getElementById('blade').value) / 10;
 
-        var regex = /(\d+(?:\.\d+)?)[\sхxX×*](\d+(?:\.\d+)?)[\s\-:=]+(\d+)/g;
-        var match; var demands = {};
-        while ((match = regex.exec(text)) !== null) {
-            var w = parseFloat(match[1]); var h = parseFloat(match[2]); var qty = parseInt(match[3]);
-            demands[w] = (demands[w] || 0) + (qty * 2); demands[h] = (demands[h] || 0) + (qty * 2);
-        }
-        
-        var hasDemands = false;
-        for (var k in demands) { if (demands.hasOwnProperty(k)) { hasDemands = true; break; } }
-        if (!hasDemands) { alert("Неверный формат. Пример: 30х20 - 350"); return; }
-        
-        var uniqueLengths = [];
-        for (var k in demands) {
-            if (demands.hasOwnProperty(k) && demands[k] > 0) { uniqueLengths.push(Number(k)); }
-        }
-        uniqueLengths.sort(function(a, b) { return b - a; });
-        
-        var patterns = []; 
-        var currentPattern = [];
-        for (var i = 0; i < uniqueLengths.length; i++) { currentPattern.push(0); }
-        
-        function gen(idx, curLen) {
-            if(idx === uniqueLengths.length) { if(curLen > 0) patterns.push(currentPattern.slice()); return; }
-            var len = uniqueLengths[idx];
-            var maxP = Math.floor((slatLen - curLen) / (len + blade));
-            for(var i=maxP; i>=0; i--) { currentPattern[idx] = i; gen(idx+1, curLen + i*(len+blade)); }
-        }
-        gen(0,0);
-        
-        var remaining = {};
-        for (var k in demands) { if (demands.hasOwnProperty(k)) { remaining[k] = demands[k]; } }
-        
-        function hasRemainingItems(rem) {
-            for (var k in rem) { if (rem.hasOwnProperty(k) && rem[k] > 0) return true; }
-            return false;
-        }
-        
-        var plan = []; var safety = 0;
-        
-        while(hasRemainingItems(remaining) && safety++ < 2000) {
-            var bestP = null; var bestScore = -Infinity;
-            
-            for(var idxP=0; idxP<patterns.length; idxP++) {
-                var p = patterns[idxP];
-                var score = 0; var used = 0; var hits = false;
-                
-                for(var i=0; i<uniqueLengths.length; i++) {
-                    var len = uniqueLengths[i]; var cnt = p[i]; if(cnt===0) continue;
-                    used += cnt * (len+blade);
-                    if(remaining[len] > 0) { 
-                        score += Math.min(cnt, remaining[len]) * len; 
-                        hits = true; 
+            if (!text.trim()) throw new Error('Введите заказ');
+            if (isNaN(slatLen) || slatLen <= 0) throw new Error('Длина рейки > 0');
+            if (isNaN(packSize) || packSize <= 0) packSize = 1;
+
+            const regex = /(\d+(?:\.\d+)?)[\sхxX×*](\d+(?:\.\d+)?)[\s\-:=]+(\d+)/g;
+            let demands = {};
+            let match;
+            while ((match = regex.exec(text)) !== null) {
+                let w = parseFloat(match[1]), h = parseFloat(match[2]), qty = parseInt(match[3]);
+                demands[w] = (demands[w] || 0) + qty * 2;
+                demands[h] = (demands[h] || 0) + qty * 2;
+            }
+            if (Object.keys(demands).length === 0) throw new Error('Формат: 30х20 - 350');
+
+            let unique = Object.keys(demands).map(Number).sort((a,b)=>b-a);
+            // генерация patterns
+            let patterns = [];
+            let curPat = new Array(unique.length).fill(0);
+            function gen(idx, curLen) {
+                if (idx === unique.length) {
+                    if (curLen > 0) patterns.push([...curPat]);
+                    return;
+                }
+                let len = unique[idx];
+                let maxCnt = Math.floor((slatLen - curLen) / (len + blade));
+                for (let i = maxCnt; i >= 0; i--) {
+                    curPat[idx] = i;
+                    gen(idx+1, curLen + i*(len+blade));
+                }
+            }
+            gen(0,0);
+
+            let remaining = {};
+            for (let k in demands) remaining[k] = demands[k];
+
+            let plan = [];
+            let safety = 0;
+            const hasRemaining = () => Object.values(remaining).some(v=>v>0);
+
+            while (hasRemaining() && safety++ < 2000) {
+                let bestP = null, bestScore = -Infinity;
+                for (let p of patterns) {
+                    let used = 0, score = 0, hits = false;
+                    for (let i=0; i<unique.length; i++) {
+                        let len = unique[i];
+                        let cnt = p[i];
+                        if (cnt === 0) continue;
+                        used += cnt * (len + blade);
+                        if (remaining[len] > 0) {
+                            score += Math.min(cnt, remaining[len]) * len;
+                            hits = true;
+                        }
+                    }
+                    if (!hits) continue;
+                    let rest = slatLen - used;
+                    score -= rest;
+                    if (score > bestScore) { bestScore = score; bestP = p; }
+                }
+                if (!bestP) break;
+
+                let steps = Infinity;
+                for (let i=0; i<unique.length; i++) {
+                    if (bestP[i] > 0 && remaining[unique[i]] > 0) {
+                        steps = Math.min(steps, Math.ceil(remaining[unique[i]] / bestP[i]));
                     }
                 }
-                if(!hits) continue;
-                
-                var rest = slatLen - used;
-                score -= rest;
-                
-                if(score > bestScore) { bestScore = score; bestP = p; }
+                if (!isFinite(steps)) steps = 1;
+                for (let i=0; i<unique.length; i++) remaining[unique[i]] -= bestP[i] * steps;
+                plan.push({pattern: bestP, count: steps});
             }
-            if(!bestP) break;
-            
-            var steps = 999999;
-            for(var i=0; i<uniqueLengths.length; i++) {
-                if(bestP[i] > 0 && remaining[uniqueLengths[i]] > 0) {
-                    steps = Math.min(steps, Math.ceil(remaining[uniqueLengths[i]] / bestP[i]));
-                }
-            }
-            if(steps === 999999) steps = 1;
-            for(var i=0; i<uniqueLengths.length; i++) remaining[uniqueLengths[i]] -= bestP[i] * steps;
-            plan.push({pattern: bestP, count: steps});
-        }
-        
-        var total = 0; 
-        for (var i = 0; i < plan.length; i++) { total += plan[i].count; }
-        
-        var packs = Math.floor(total/packSize); var loose = total % packSize;
-        
-        var waText = "📦 ЗАКАЗ В РАСПИЛ\nВсего реек: " + total + " шт (" + packs + " пач. + " + loose + " шт.)\n";
-        waText += "\n🛠 КАРТА РАСПИЛА:\n";
 
-        var statsHtml = '<div class="stat-box">' +
-            '<h3>' + total + ' шт</h3>' +
-            '<p>' + packs + ' пачек + ' + loose + ' отдельно</p></div>';
-        document.getElementById('stats_area').innerHTML = statsHtml;
-        
-        var html = '<h3 style="font-size: 20px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.2px;">Схема распила</h3>';
-        for (var idx = 0; idx < plan.length; idx++) {
-            var item = plan[idx];
-            if (item.count === 0) continue;
-            
-            var p = Math.floor(item.count/packSize); var l = item.count%packSize;
-            var countTxt = p>0 ? (p + ' пач.' + (l>0 ? ' и ' + l + ' шт.' : '')) : (l + ' шт.');
-            waText += "\n" + (idx+1) + ". Пилить: " + countTxt + " (всего " + item.count + " реек)\nСхема: ";
-            
-            var visual = '<div class="visual-slat">'; var used = 0;
-            var parts = [];
-            for(var i=0; i<uniqueLengths.length; i++) {
-                for(var c=0; c<item.pattern[i]; c++) {
-                    visual += '<div class="slat-part" style="flex-grow: ' + uniqueLengths[i] + '">' + uniqueLengths[i] + '</div>';
-                    used += uniqueLengths[i] + blade;
-                    parts.push(uniqueLengths[i]);
-                }
-            }
-            waText += parts.join(' + ') + '\n';
-            
-            var rest = slatLen - used;
-            if(rest > 0.1) visual += '<div class="slat-part color-waste" style="flex-grow: ' + rest + '">' + rest.toFixed(1) + '</div>';
-            visual += '</div>';
-            
-            html += '<div class="instruction-card">' +
-                '<span style="color: var(--accent);">Рез №' + (idx+1) + '</span> — <span style="font-weight: 500;">' + countTxt + '</span>' +
-                visual +
-            '</div>';
-        }
-        
-        document.getElementById('text_for_whatsapp').value = waText;
-        document.getElementById('text_for_whatsapp').style.display = 'block';
-        document.getElementById('map_area').innerHTML = html;
-        document.getElementById('results').style.display = 'block';
-        
-        document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
-    } catch(e) { alert("Ошибка: " + e.message); }
-}
+            let total = plan.reduce((s,item)=>s+item.count,0);
+            let packs = Math.floor(total / packSize);
+            let loose = total % packSize;
 
-function copyText() {
-    var textArea = document.getElementById("text_for_whatsapp");
-    textArea.select();
-    textArea.setSelectionRange(0, 99999);
-    try {
-        navigator.clipboard.writeText(textArea.value).then(() => {
-            showCopyFeedback();
-        }).catch(() => {
-            document.execCommand("copy");
-            showCopyFeedback();
-        });
-    } catch(e) {
-        document.execCommand("copy");
-        showCopyFeedback();
+            // процент использования (по длинам)
+            let totalUsedLen = 0, totalPossibleLen = total * slatLen;
+            for (let item of plan) {
+                let usedInPattern = 0;
+                for (let i=0; i<unique.length; i++) {
+                    usedInPattern += item.pattern[i] * unique[i];
+                }
+                totalUsedLen += usedInPattern * item.count;
+            }
+            let efficiency = (totalUsedLen / totalPossibleLen * 100).toFixed(1);
+
+            // UI статистика
+            const statsHtml = `<div class="results-grid">
+                <div class="result-item"><div class="value">${total} шт</div><div class="label">Всего реек</div></div>
+                <div class="result-item"><div class="value">${packs}</div><div class="label">Пачек</div></div>
+                <div class="result-item"><div class="value">${loose}</div><div class="label">Остаток</div></div>
+                <div class="result-item"><div class="value">${efficiency}%</div><div class="label">Использование</div></div>
+            </div>`;
+            document.getElementById('stats_area').innerHTML = statsHtml;
+
+            let waText = `📦 ЗАКАЗ В РАСПИЛ\nВсего реек: ${total} шт (${packs} пач. + ${loose} шт.)\nИспользование материала: ${efficiency}%\n\n🛠 КАРТА РАСПИЛА:\n`;
+            let htmlMap = '';
+
+            for (let idx=0; idx<plan.length; idx++) {
+                let item = plan[idx];
+                if (item.count === 0) continue;
+                let p = Math.floor(item.count/packSize);
+                let l = item.count % packSize;
+                let countTxt = p>0 ? (p + ' пач.' + (l>0 ? ` и ${l} шт.` : '')) : (l + ' шт.');
+                waText += `\n${idx+1}. Пилить: ${countTxt} (всего ${item.count} реек)\nСхема: `;
+                
+                let parts = [];
+                let usedLen = 0;
+                for (let i=0; i<unique.length; i++) {
+                    for (let c=0; c<item.pattern[i]; c++) {
+                        parts.push(unique[i]);
+                        usedLen += unique[i] + blade;
+                    }
+                }
+                waText += parts.join(' + ') + `\nОстаток: ${(slatLen - usedLen).toFixed(1)} см\n`;
+                
+                // визуальная полоска
+                let visual = '<div class="visual-slat">';
+                let visUsed = 0;
+                for (let i=0; i<unique.length; i++) {
+                    for (let c=0; c<item.pattern[i]; c++) {
+                        visual += `<div class="slat-part" style="flex-grow: ${unique[i]}">${unique[i]}</div>`;
+                        visUsed += unique[i] + blade;
+                    }
+                }
+                let restLen = slatLen - visUsed;
+                if (restLen > 0.1) visual += `<div class="slat-part color-waste" style="flex-grow: ${restLen}">${restLen.toFixed(1)}</div>`;
+                visual += '</div>';
+                
+                let patternText = '<div class="pattern-text">📏 ' + parts.join(' + ') + (restLen>0.1 ? ` + отход ${restLen.toFixed(1)}` : '') + '</div>';
+                htmlMap += `<div class="instruction-card">
+                    <div class="inst-header">🪚 Рез №${idx+1} — Пилить: ${countTxt}</div>
+                    ${patternText}
+                    ${visual}
+                </div>`;
+            }
+            document.getElementById('text_for_whatsapp').value = waText;
+            document.getElementById('text_for_whatsapp').style.display = 'block';
+            document.getElementById('map_area').innerHTML = htmlMap;
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        } catch(e) {
+            alert('Ошибка: ' + e.message);
+        }
     }
-}
 
-function showCopyFeedback() {
-    var btn = document.getElementById("copy_btn");
-    var original = btn.innerHTML;
-    btn.innerHTML = "✅ Скопировано!";
-    setTimeout(function() {
-        btn.innerHTML = original;
-    }, 2000);
-}
+    function copyToClipboard() {
+        let txt = document.getElementById('text_for_whatsapp');
+        txt.select();
+        txt.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(txt.value).then(() => {
+            let btn = document.getElementById('copy_btn');
+            let orig = btn.innerHTML;
+            btn.innerHTML = '✅ Скопировано!';
+            setTimeout(() => btn.innerHTML = orig, 2000);
+        }).catch(() => alert('Нажмите Ctrl+C'));
+    }
 </script>
 </body>
 </html>
