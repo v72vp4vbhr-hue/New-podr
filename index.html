@@ -40,18 +40,19 @@
             margin-bottom: 28px;
         }
         .header-icon {
-            width: 56px;
-            height: 56px;
-            background: rgba(0, 122, 255, 0.1);
-            border-radius: 18px;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 122, 255, 0.15);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
         .header-icon img {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .header-text h1 { font-size: 28px; font-weight: 700; }
         .header-text p { font-size: 14px; color: var(--text-secondary); }
@@ -131,7 +132,6 @@
             margin-bottom: 20px;
         }
         
-        /* визуальная полоска с синими сегментами */
         .visual-slat {
             height: 44px;
             background: #e9e9ef;
@@ -249,7 +249,6 @@ function runCalc() {
         
         let lengths = Object.keys(demands).map(Number).sort((a,b)=>b-a);
         
-        // генерация всех возможных комбинаций
         let patterns = [];
         let cur = new Array(lengths.length).fill(0);
         function generate(idx, usedLen) {
@@ -322,7 +321,6 @@ function runCalc() {
         let packs = Math.floor(totalSticks / packSize);
         let loose = totalSticks % packSize;
         
-        // процент использования
         let totalUsed = 0;
         for (let item of plan) {
             let used = 0;
@@ -333,7 +331,6 @@ function runCalc() {
         }
         let efficiency = (totalUsed / (totalSticks * slatLen) * 100).toFixed(1);
         
-        // статистика
         document.getElementById('stats_area').innerHTML = `
             <div class="results-grid">
                 <div class="result-item"><div class="value">${totalSticks} шт</div><div class="label">Всего реек</div></div>
@@ -353,19 +350,31 @@ function runCalc() {
             let lCount = item.count % packSize;
             let countTxt = pCount > 0 ? (pCount + ' пач.' + (lCount > 0 ? ` и ${lCount} шт.` : '')) : (lCount + ' шт.');
             
-            let parts = [];
+            // Собираем количество каждой длины
+            let counts = {};
+            for (let i=0; i<lengths.length; i++) {
+                if (item.pattern[i] > 0) {
+                    counts[lengths[i]] = item.pattern[i];
+                }
+            }
+            
+            // Формируем читаемую строку: "40 см — 6 шт, 30 см — 3 шт"
+            let partsList = [];
+            for (let len in counts) {
+                partsList.push(`${len} см — ${counts[len]} шт`);
+            }
+            let partsText = partsList.join(', ');
+            
             let usedLenTotal = 0;
             for (let i=0; i<lengths.length; i++) {
-                for (let c=0; c<item.pattern[i]; c++) {
-                    parts.push(lengths[i]);
-                    usedLenTotal += lengths[i] + blade;
-                }
+                usedLenTotal += item.pattern[i] * (lengths[i] + blade);
             }
             let rest = slatLen - usedLenTotal;
             
-            waText += `\n${idx+1}. Пилить: ${countTxt} (всего ${item.count} реек)\nСхема: ${parts.join(' + ')}${rest > 0.1 ? ` + отход ${rest.toFixed(1)}` : ''}\n`;
+            // Текст для WhatsApp
+            waText += `\n${idx+1}. Пилить: ${countTxt} (${item.count} реек)\n${partsText}${rest > 0.1 ? `, отход ${rest.toFixed(1)} см` : ''}\n`;
             
-            // визуальная полоска
+            // Визуальная полоска
             let visual = '<div class="visual-slat">';
             let visUsed = 0;
             for (let i=0; i<lengths.length; i++) {
@@ -381,7 +390,7 @@ function runCalc() {
             htmlMap += `
                 <div class="instruction-card">
                     <div class="inst-header">🪚 Рез №${idx+1} — Пилить: ${countTxt}</div>
-                    <div class="pattern-text">📏 ${parts.join(' + ')}${rest > 0.1 ? ` + отход ${rest.toFixed(1)}` : ''}</div>
+                    <div class="pattern-text">📏 ${partsText}${rest > 0.1 ? `, отход ${rest.toFixed(1)} см` : ''}</div>
                     ${visual}
                 </div>
             `;
