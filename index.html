@@ -17,7 +17,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Светлая тема (по умолчанию) */
+        /* Светлая тема (белая) */
         :root {
             --bg: #f5f5f7;
             --card: #ffffff;
@@ -31,49 +31,11 @@
             --icon-bg: rgba(0, 122, 255, 0.15);
         }
         
-        /* Тёмная тема */
-        body.dark {
-            --bg: #000000;
-            --card: #1c1c1e;
-            --text: #ffffff;
-            --text-secondary: #8e8e93;
-            --accent: #0a84ff;
-            --border: #2c2c2e;
-            --success: #32d74b;
-            --waste: #2c2c2e;
-            --waste-text: #6c6c70;
-            --icon-bg: rgba(10, 132, 255, 0.2);
-        }
-        
         body {
             background: var(--bg);
             color: var(--text);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
             padding: 20px 16px 40px;
-            transition: background 0.2s, color 0.2s;
-        }
-        
-        /* Кнопка переключения темы */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            border-radius: 30px;
-            background: var(--card);
-            border: 0.5px solid var(--border);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            z-index: 1000;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .theme-toggle:active {
-            transform: scale(0.95);
         }
         
         .header {
@@ -106,7 +68,6 @@
             padding: 24px 20px;
             margin-bottom: 20px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.04), 0 0 0 0.5px rgba(0,0,0,0.02);
-            transition: background 0.2s;
         }
         .section-title {
             font-size: 20px;
@@ -131,7 +92,6 @@
             color: var(--text);
             margin-bottom: 20px;
             outline: none;
-            transition: background 0.2s, border 0.2s;
         }
         textarea:focus, input:focus {
             border-color: var(--accent);
@@ -238,9 +198,6 @@
 </head>
 <body>
 
-<!-- Кнопка переключения темы 🌙/☀️ -->
-<div class="theme-toggle" onclick="toggleTheme()">🌙</div>
-
 <div class="header">
     <div class="header-icon">
         <!-- ВАША ИКОНКА: дисковая пила + линейка -->
@@ -276,28 +233,6 @@
 </div>
 
 <script>
-// Переключение темы с сохранением
-function toggleTheme() {
-    document.body.classList.toggle('dark');
-    let btn = document.querySelector('.theme-toggle');
-    if (document.body.classList.contains('dark')) {
-        btn.innerHTML = '☀️';
-        localStorage.setItem('theme', 'dark');
-    } else {
-        btn.innerHTML = '🌙';
-        localStorage.setItem('theme', 'light');
-    }
-}
-
-// Загрузка сохранённой темы
-let savedTheme = localStorage.getItem('theme');
-if (savedTheme === 'dark') {
-    document.body.classList.add('dark');
-    document.querySelector('.theme-toggle').innerHTML = '☀️';
-} else {
-    document.querySelector('.theme-toggle').innerHTML = '🌙';
-}
-
 function runCalc() {
     try {
         let orderText = document.getElementById('order_input').value;
