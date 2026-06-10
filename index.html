@@ -1,857 +1,440 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>
-Расчёт прорезов
-</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-
-background:
-linear-gradient(
-180deg,
-#07111f 0%,
-#0a1628 40%,
-#0b0f18 100%
-);
-
-min-height:100vh;
-
-font-family:
--apple-system,
-BlinkMacSystemFont,
-"Segoe UI",
-sans-serif;
-
-color:white;
-
-padding:18px;
-}
-
-.app{
-
-max-width:760px;
-
-margin:auto;
-}
-
-.header{
-
-margin-bottom:24px;
-}
-
-.logo{
-
-display:flex;
-
-align-items:center;
-
-gap:16px;
-}
-
-.logo-icon{
-
-width:72px;
-
-height:72px;
-
-border-radius:22px;
-
-background:
-linear-gradient(
-135deg,
-#5eff7a,
-#2cb7ff
-);
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:38px;
-
-font-weight:900;
-
-color:#07111f;
-}
-
-.logo-text h1{
-
-font-size:54px;
-
-font-weight:900;
-
-letter-spacing:1px;
-}
-
-.logo-text p{
-
-color:#9ba8bd;
-
-font-size:22px;
-
-margin-top:4px;
-}
-
-.panel{
-
-background:
-rgba(255,255,255,0.04);
-
-border:
-1px solid rgba(255,255,255,0.06);
-
-backdrop-filter:blur(20px);
-
-border-radius:30px;
-
-padding:22px;
-
-margin-bottom:22px;
-
-box-shadow:
-0 20px 60px rgba(0,0,0,0.3);
-}
-
-.panel-head{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:18px;
-}
-
-.panel-title{
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-font-size:28px;
-
-font-weight:800;
-
-color:#67ff75;
-}
-
-.badge{
-
-padding:12px 18px;
-
-border-radius:16px;
-
-background:
-rgba(255,255,255,0.05);
-
-color:#d6dce8;
-
-font-size:18px;
-}
-
-textarea{
-
-width:100%;
-
-height:190px;
-
-border:none;
-
-outline:none;
-
-resize:none;
-
-padding:24px;
-
-font-size:34px;
-
-line-height:1.5;
-
-color:white;
-
-background:
-rgba(0,0,0,0.2);
-
-border-radius:24px;
-}
-
-.buttons{
-
-display:flex;
-
-gap:14px;
-
-margin-top:18px;
-}
-
-button{
-
-border:none;
-
-cursor:pointer;
-
-border-radius:22px;
-
-padding:22px;
-
-font-size:28px;
-
-font-weight:800;
-
-transition:0.2s;
-}
-
-button:active{
-
-transform:scale(0.98);
-}
-
-.btn-main{
-
-flex:1;
-
-background:
-linear-gradient(
-135deg,
-#5dff72,
-#49d85d
-);
-
-color:#07111f;
-}
-
-.btn-clear{
-
-width:220px;
-
-background:
-rgba(255,255,255,0.08);
-
-color:white;
-}
-
-.btn-share{
-
-width:320px;
-
-background:
-linear-gradient(
-135deg,
-#327bff,
-#5b4dff
-);
-
-color:white;
-}
-
-.results-title{
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-font-size:30px;
-
-font-weight:900;
-
-margin-bottom:18px;
-
-color:#c8d2e3;
-}
-
-.card{
-
-background:
-rgba(255,255,255,0.04);
-
-border:
-1px solid rgba(255,255,255,0.06);
-
-border-radius:30px;
-
-padding:24px;
-
-margin-bottom:18px;
-}
-
-.card-title{
-
-font-size:44px;
-
-font-weight:900;
-
-margin-bottom:20px;
-}
-
-.row{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:10px 0;
-
-font-size:34px;
-}
-
-.value{
-
-font-size:52px;
-
-font-weight:900;
-
-color:#67ff75;
-}
-
-.info{
-
-margin-top:18px;
-
-padding-top:18px;
-
-border-top:
-1px solid rgba(255,255,255,0.08);
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:20px;
-}
-
-.info-box{
-
-font-size:23px;
-
-line-height:1.6;
-
-color:#a8b2c2;
-}
-
-.summary{
-
-margin-top:28px;
-
-background:
-linear-gradient(
-135deg,
-rgba(94,255,122,0.12),
-rgba(50,123,255,0.12)
-);
-
-border:
-1px solid rgba(94,255,122,0.18);
-
-border-radius:30px;
-
-padding:28px;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-}
-
-.summary span{
-
-font-size:34px;
-
-font-weight:900;
-}
-
-.summary strong{
-
-font-size:64px;
-
-color:#67ff75;
-}
-
-@media(max-width:700px){
-
-.logo-text h1{
-
-font-size:34px;
-}
-
-.logo-text p{
-
-font-size:16px;
-}
-
-textarea{
-
-font-size:26px;
-}
-
-.buttons{
-
-flex-direction:column;
-}
-
-.btn-clear,
-.btn-share{
-
-width:100%;
-}
-
-.card-title{
-
-font-size:34px;
-}
-
-.row{
-
-font-size:26px;
-}
-
-.value{
-
-font-size:42px;
-}
-
-.info{
-
-grid-template-columns:1fr;
-}
-
-.summary{
-
-flex-direction:column;
-
-gap:12px;
-}
-
-.summary strong{
-
-font-size:52px;
-}
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Раскрой МДФ">
+    <title>Раскрой МДФ</title>
+    <style>
+        /* ----- Сброс и переменные ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* светлая тема (по умолчанию) */
+            --bg: #f5f5f7;
+            --card: #ffffff;
+            --text-primary: #1d1c1f;
+            --text-secondary: #6c6c70;
+            --accent: #007aff;
+            --accent-pressed: #005fc1;
+            --border: #e9e9ef;
+            --success: #34c759;
+            --waste-bg: #e9e9ef;
+            --waste-text: #8e8e93;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #000000;
+                --card: #1c1c1e;
+                --text-primary: #ffffff;
+                --text-secondary: #98989e;
+                --accent: #0a84ff;
+                --accent-pressed: #409cff;
+                --border: #2c2c2e;
+                --success: #32d74b;
+                --waste-bg: #2c2c2e;
+                --waste-text: #8e8e93;
+                --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 0.5px rgba(255, 255, 255, 0.02);
+                --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 0 0.5px rgba(255, 255, 255, 0.02);
+            }
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+            line-height: 1.45;
+            padding: 20px 16px 32px 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* карточки */
+        .card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        textarea, input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            font-size: 17px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", monospace;
+            color: var(--text-primary);
+            transition: all 0.1s ease;
+            margin-bottom: 20px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        textarea:focus, input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        textarea {
+            font-family: ui-monospace, SF Mono, monospace;
+            font-size: 15px;
+            line-height: 1.4;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .input-group > div {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-size: 17px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            margin-top: 8px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        button:active {
+            background: var(--accent-pressed);
+            transform: scale(0.98);
+        }
+
+        .btn-copy {
+            background: var(--success);
+            color: #000;
+            margin-top: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-copy:active {
+            background: #25a645;
+            transform: scale(0.98);
+        }
+
+        /* Статистика */
+        .stat-box {
+            background: var(--bg);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 28px;
+            border: 1px solid var(--border);
+        }
+        .stat-box h3 {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .stat-box p {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* визуальная планка */
+        .visual-slat {
+            height: 44px;
+            background: var(--waste-bg);
+            display: flex;
+            margin: 16px 0 12px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 0.5px solid var(--border);
+        }
+        .slat-part {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            height: 100%;
+            background: var(--accent);
+            color: white;
+            border-right: 0.5px solid rgba(0,0,0,0.05);
+        }
+        .color-waste {
+            background: var(--waste-bg);
+            color: var(--waste-text);
+            font-weight: 500;
+        }
+
+        .instruction-card {
+            background: var(--bg);
+            border-radius: 18px;
+            padding: 16px 18px;
+            margin-bottom: 16px;
+            border: 0.5px solid var(--border);
+            transition: all 0.1s;
+        }
+        .instruction-card span {
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        #text_for_whatsapp {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            font-family: ui-monospace, SF Mono, monospace;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-top: 16px;
+            display: none;
+            resize: vertical;
+        }
+
+        /* скролл */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c6c6c8;
+            border-radius: 10px;
+        }
+        @media (prefers-color-scheme: dark) {
+            ::-webkit-scrollbar-thumb {
+                background: #38383a;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="card">
+        <h2>📐 Раскрой МДФ</h2>
+        
+        <label>Заказ (ШхВ - Кол-во):</label>
+        <textarea id="order_input" inputmode="text">30х20 - 350
+40х25 - 200</textarea>
+        
+        <div class="input-group">
+            <div><label>Рейка (см):</label><input type="number" id="slat_len" value="272" inputmode="decimal" step="any"></div>
+            <div><label>В пачке (шт):</label><input type="number" id="pack_size" value="26" inputmode="numeric"></div>
+            <div><label>Диск (мм):</label><input type="number" id="blade" value="3" inputmode="decimal" step="any"></div>
+        </div>
+        
+        <button onclick="run()">Рассчитать</button>
+    </div>
 
-<div class="app">
-
-<div class="header">
-
-<div class="logo">
-
-<div class="logo-icon">
-✂
-</div>
-
-<div class="logo-text">
-
-<h1>
-РАСЧЁТ ПРОРЕЗОВ
-</h1>
-
-<p>
-26 реек = 1 прорез
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="panel">
-
-<div class="panel-head">
-
-<div class="panel-title">
-🧾 Введите заказ
-</div>
-
-<div class="badge">
-270 см рейка
-</div>
-
-</div>
-
-<textarea
-id="input"
-placeholder="30x20 — 350
-40x30 — 350
-70x50 — 400"></textarea>
-
-<div class="buttons">
-
-<button
-class="btn-main"
-onclick="calc()">
-Рассчитать
-</button>
-
-<button
-class="btn-clear"
-onclick="clearAll()">
-Очистить
-</button>
-
-<button
-class="btn-share"
-onclick="shareResult()">
-📤 Поделиться планом
-</button>
-
-</div>
-
-</div>
-
-<div
-class="results"
-id="results">
-</div>
-
-</div>
+    <div class="card" id="results" style="display: none;">
+        <div id="stats_area"></div>
+        <textarea id="text_for_whatsapp" readonly></textarea>
+        <button class="btn-copy" id="copy_btn" onclick="copyText()">📋 Скопировать для WhatsApp</button>
+        <div id="map_area" style="margin-top: 20px;"></div>
+    </div>
 
 <script>
+function run() {
+    try {
+        var text = document.getElementById('order_input').value;
+        var slatLen = parseFloat(document.getElementById('slat_len').value);
+        var packSize = parseInt(document.getElementById('pack_size').value);
+        var blade = parseFloat(document.getElementById('blade').value) / 10;
+        
+        if (!text.trim()) { alert("Введите данные заказа!"); return; }
+        if (isNaN(slatLen) || slatLen <= 0) { alert("Укажите длину рейки > 0"); return; }
+        if (isNaN(packSize) || packSize <= 0) packSize = 1;
 
-const REIKA = 270;
+        var regex = /(\d+(?:\.\d+)?)[\sхxX×*](\d+(?:\.\d+)?)[\s\-:=]+(\d+)/g;
+        var match; var demands = {};
+        while ((match = regex.exec(text)) !== null) {
+            var w = parseFloat(match[1]); var h = parseFloat(match[2]); var qty = parseInt(match[3]);
+            demands[w] = (demands[w] || 0) + (qty * 2); demands[h] = (demands[h] || 0) + (qty * 2);
+        }
+        
+        var hasDemands = false;
+        for (var k in demands) { if (demands.hasOwnProperty(k)) { hasDemands = true; break; } }
+        if (!hasDemands) { alert("Неверный формат. Пример: 30х20 - 350"); return; }
+        
+        var uniqueLengths = [];
+        for (var k in demands) {
+            if (demands.hasOwnProperty(k) && demands[k] > 0) { uniqueLengths.push(Number(k)); }
+        }
+        uniqueLengths.sort(function(a, b) { return b - a; });
+        
+        var patterns = []; 
+        var currentPattern = [];
+        for (var i = 0; i < uniqueLengths.length; i++) { currentPattern.push(0); }
+        
+        function gen(idx, curLen) {
+            if(idx === uniqueLengths.length) { if(curLen > 0) patterns.push(currentPattern.slice()); return; }
+            var len = uniqueLengths[idx];
+            var maxP = Math.floor((slatLen - curLen) / (len + blade));
+            for(var i=maxP; i>=0; i--) { currentPattern[idx] = i; gen(idx+1, curLen + i*(len+blade)); }
+        }
+        gen(0,0);
+        
+        var remaining = {};
+        for (var k in demands) { if (demands.hasOwnProperty(k)) { remaining[k] = demands[k]; } }
+        
+        function hasRemainingItems(rem) {
+            for (var k in rem) { if (rem.hasOwnProperty(k) && rem[k] > 0) return true; }
+            return false;
+        }
+        
+        var plan = []; var safety = 0;
+        
+        while(hasRemainingItems(remaining) && safety++ < 2000) {
+            var bestP = null; var bestScore = -Infinity;
+            
+            for(var idxP=0; idxP<patterns.length; idxP++) {
+                var p = patterns[idxP];
+                var score = 0; var used = 0; var hits = false;
+                
+                for(var i=0; i<uniqueLengths.length; i++) {
+                    var len = uniqueLengths[i]; var cnt = p[i]; if(cnt===0) continue;
+                    used += cnt * (len+blade);
+                    if(remaining[len] > 0) { 
+                        score += Math.min(cnt, remaining[len]) * len; 
+                        hits = true; 
+                    }
+                }
+                if(!hits) continue;
+                
+                var rest = slatLen - used;
+                score -= rest;
+                
+                if(score > bestScore) { bestScore = score; bestP = p; }
+            }
+            if(!bestP) break;
+            
+            var steps = 999999;
+            for(var i=0; i<uniqueLengths.length; i++) {
+                if(bestP[i] > 0 && remaining[uniqueLengths[i]] > 0) {
+                    steps = Math.min(steps, Math.ceil(remaining[uniqueLengths[i]] / bestP[i]));
+                }
+            }
+            if(steps === 999999) steps = 1;
+            for(var i=0; i<uniqueLengths.length; i++) remaining[uniqueLengths[i]] -= bestP[i] * steps;
+            plan.push({pattern: bestP, count: steps});
+        }
+        
+        var total = 0; 
+        for (var i = 0; i < plan.length; i++) { total += plan[i].count; }
+        
+        var packs = Math.floor(total/packSize); var loose = total % packSize;
+        
+        var waText = "📦 ЗАКАЗ В РАСПИЛ\nВсего реек: " + total + " шт (" + packs + " пач. + " + loose + " шт.)\n";
+        waText += "\n🛠 КАРТА РАСПИЛА:\n";
 
-const LOAD = 26;
-
-let shareText = '';
-
-function parseInput(text){
-
-const items = [];
-
-text
-.split('\n')
-.forEach(line=>{
-
-const m = line.match(
-/(\d+)\s*[xх×]\s*(\d+)\s*[-—–]\s*(\d+)/i
-);
-
-if(m){
-
-items.push({
-
-w:+m[1],
-
-h:+m[2],
-
-q:+m[3]
-});
-}
-});
-
-return items;
-}
-
-function calc(){
-
-const input =
-document
-.getElementById('input')
-.value
-.trim();
-
-if(!input){
-
-alert('Введите заказ');
-
-return;
-}
-
-const items =
-parseInput(input);
-
-if(!items.length){
-
-alert('Неверный формат');
-
-return;
-}
-
-const need = {};
-
-items.forEach(it=>{
-
-need[it.w] =
-(need[it.w] || 0)
-+ (it.q * 2);
-
-need[it.h] =
-(need[it.h] || 0)
-+ (it.q * 2);
-});
-
-const cuts = {};
-
-const details = {};
-
-Object.keys(need).forEach(key=>{
-
-const sz = +key;
-
-const totalDetails =
-need[sz];
-
-const perReika =
-Math.floor(
-REIKA / sz
-);
-
-const reiki =
-Math.ceil(
-totalDetails / perReika
-);
-
-const propili =
-Math.ceil(
-reiki / LOAD
-);
-
-cuts[sz] = propili;
-
-details[sz] = {
-
-details:
-totalDetails,
-
-perReika:
-perReika,
-
-reiki:
-reiki,
-
-propili:
-propili
-};
-});
-
-let html = `
-
-<div class="results-title">
-📊 Результаты расчёта
-</div>
-`;
-
-let total = 0;
-
-const counted = {};
-
-shareText =
-'📐 План прорезов\n\n';
-
-items.forEach(it=>{
-
-let cw = 0;
-
-let ch = 0;
-
-if(!counted[it.w]){
-
-cw = cuts[it.w];
-
-counted[it.w] = true;
+        var statsHtml = '<div class="stat-box">' +
+            '<h3>' + total + ' шт</h3>' +
+            '<p>' + packs + ' пачек + ' + loose + ' отдельно</p></div>';
+        document.getElementById('stats_area').innerHTML = statsHtml;
+        
+        var html = '<h3 style="font-size: 20px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.2px;">Схема распила</h3>';
+        for (var idx = 0; idx < plan.length; idx++) {
+            var item = plan[idx];
+            if (item.count === 0) continue;
+            
+            var p = Math.floor(item.count/packSize); var l = item.count%packSize;
+            var countTxt = p>0 ? (p + ' пач.' + (l>0 ? ' и ' + l + ' шт.' : '')) : (l + ' шт.');
+            waText += "\n" + (idx+1) + ". Пилить: " + countTxt + " (всего " + item.count + " реек)\nСхема: ";
+            
+            var visual = '<div class="visual-slat">'; var used = 0;
+            var parts = [];
+            for(var i=0; i<uniqueLengths.length; i++) {
+                for(var c=0; c<item.pattern[i]; c++) {
+                    visual += '<div class="slat-part" style="flex-grow: ' + uniqueLengths[i] + '">' + uniqueLengths[i] + '</div>';
+                    used += uniqueLengths[i] + blade;
+                    parts.push(uniqueLengths[i]);
+                }
+            }
+            waText += parts.join(' + ') + '\n';
+            
+            var rest = slatLen - used;
+            if(rest > 0.1) visual += '<div class="slat-part color-waste" style="flex-grow: ' + rest + '">' + rest.toFixed(1) + '</div>';
+            visual += '</div>';
+            
+            html += '<div class="instruction-card">' +
+                '<span style="color: var(--accent);">Рез №' + (idx+1) + '</span> — <span style="font-weight: 500;">' + countTxt + '</span>' +
+                visual +
+            '</div>';
+        }
+        
+        document.getElementById('text_for_whatsapp').value = waText;
+        document.getElementById('text_for_whatsapp').style.display = 'block';
+        document.getElementById('map_area').innerHTML = html;
+        document.getElementById('results').style.display = 'block';
+        
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+    } catch(e) { alert("Ошибка: " + e.message); }
 }
 
-if(!counted[it.h]){
-
-ch = cuts[it.h];
-
-counted[it.h] = true;
+function copyText() {
+    var textArea = document.getElementById("text_for_whatsapp");
+    textArea.select();
+    textArea.setSelectionRange(0, 99999);
+    try {
+        navigator.clipboard.writeText(textArea.value).then(() => {
+            showCopyFeedback();
+        }).catch(() => {
+            document.execCommand("copy");
+            showCopyFeedback();
+        });
+    } catch(e) {
+        document.execCommand("copy");
+        showCopyFeedback();
+    }
 }
 
-total += cw + ch;
-
-const dw = details[it.w];
-
-const dh = details[it.h];
-
-html += `
-
-<div class="card">
-
-<div class="card-title">
-📏 ${it.w}×${it.h}
-— ${it.q} шт.
-</div>
-
-<div class="row">
-
-<span>
-Прорезов в ${it.w}
-</span>
-
-<span class="value">
-${cw}
-</span>
-
-</div>
-
-<div class="row">
-
-<span>
-Прорезов в ${it.h}
-</span>
-
-<span class="value">
-${ch}
-</span>
-
-</div>
-
-<div class="info">
-
-<div class="info-box">
-
-${it.w}см<br>
-
-• деталей:
-${dw.details}<br>
-
-• шт/рейка:
-${dw.perReika}<br>
-
-• реек:
-${dw.reiki}<br>
-
-• прорезов:
-${dw.propili}
-
-</div>
-
-<div class="info-box">
-
-${it.h}см<br>
-
-• деталей:
-${dh.details}<br>
-
-• шт/рейка:
-${dh.perReika}<br>
-
-• реек:
-${dh.reiki}<br>
-
-• прорезов:
-${dh.propili}
-
-</div>
-
-</div>
-
-</div>
-`;
-
-shareText +=
-`📏 ${it.w}×${it.h}
-— ${it.q} шт.\n` +
-
-`• ${it.w}см →
-${cw} прорезов\n` +
-
-`• ${it.h}см →
-${ch} прорезов\n\n`;
-});
-
-html += `
-
-<div class="summary">
-
-<span>
-🔪 Всего прорезов
-</span>
-
-<strong>
-${total}
-</strong>
-
-</div>
-`;
-
-shareText +=
-`\n🔪 Всего:
-${total}`;
-
-document
-.getElementById('results')
-.innerHTML = html;
+function showCopyFeedback() {
+    var btn = document.getElementById("copy_btn");
+    var original = btn.innerHTML;
+    btn.innerHTML = "✅ Скопировано!";
+    setTimeout(function() {
+        btn.innerHTML = original;
+    }, 2000);
 }
-
-function shareResult(){
-
-if(!shareText){
-
-alert(
-'Сначала сделайте расчёт'
-);
-
-return;
-}
-
-if(navigator.share){
-
-navigator.share({
-
-title:
-'План прорезов',
-
-text:
-shareText
-});
-}
-else{
-
-navigator.clipboard
-.writeText(shareText);
-
-alert(
-'План скопирован'
-);
-}
-}
-
-function clearAll(){
-
-document
-.getElementById('input')
-.value = '';
-
-document
-.getElementById('results')
-.innerHTML = '';
-
-shareText = '';
-}
-
 </script>
-
 </body>
 </html>
