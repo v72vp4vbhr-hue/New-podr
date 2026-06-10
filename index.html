@@ -35,7 +35,8 @@
             background: var(--bg);
             color: var(--text);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-            padding: 20px 16px 40px;
+            /* safe area для iPhone с Dynamic Island */
+            padding: calc(env(safe-area-inset-top, 20px) + 10px) 16px 40px 16px;
         }
         
         .header {
@@ -43,6 +44,8 @@
             align-items: center;
             gap: 16px;
             margin-bottom: 28px;
+            /* дополнительный отступ для красоты */
+            margin-top: 8px;
         }
         .header-icon {
             width: 60px;
